@@ -1,0 +1,60 @@
+//                System.out.println("Enter tel: ");
+//                String tel;
+//                while (true) {
+//                      tel = InputMethods.getString();
+//                    if (Validation.validateTel(tel)) {
+//                        break;
+//                    }
+//                    System.out.println(Alert.ERROR_TEL);
+//                }
+
+
+        // Chọn nhiều quyền: user,admin,...etc
+//        System.out.println("Enter roles: ");
+//        String roles = InputMethods.getString();
+//        String[] stringRoles = roles.split(",");
+//        for(String s : stringRoles){
+//            switch (s){
+//                case "admin":
+//                    user.getRoles().add(RoleName.ADMIN);
+//                    break;
+//                case "user":
+//                    user.getRoles().add(RoleName.USER);
+//                    break;
+//                default:
+//                    user.getRoles().add(RoleName.USER);
+//            }
+//        }
+
+
+"\u001B[33mEmpty category list\u001B[0m"
+
+// tăng giảm stock
+ProductController productController = new ProductController();
+        int newQuantity;
+        while (true){
+            newQuantity = InputMethods.getInteger();
+            Product product = item.getProduct();
+            if(newQuantity <= item.getQuantity()+product.getStock()){
+                product.setStock(product.getStock()+item.getQuantity());
+                item.setQuantity(newQuantity);
+                product.setStock(product.getStock()-item.getQuantity());
+                productController.save(product);
+                cartController.save(item);
+                break;
+            }
+            System.err.println("Can only buy more than "+ item.getQuantity()+product.getStock() + "products");
+// add to cart thay đổi số lượng
+      int quantity;
+        while (true) {
+            quantity = InputMethods.getInteger();
+            if (quantity <= product.getStock()){
+                break;
+            }
+            System.err.println("Only have " +product.getStock() + " in stock, please reduce");
+        }
+        item.setQuantity(quantity);
+        cartController.save(item);
+        product.setStock(product.getStock()- item.getQuantity());
+        productController.save(product);
+        cartController.save(item);
