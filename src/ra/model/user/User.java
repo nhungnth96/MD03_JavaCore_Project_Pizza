@@ -1,6 +1,7 @@
 package ra.model.user;
 
 import ra.model.cart.CartItem;
+import ra.model.order.Order;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ public class User implements Serializable {
     private boolean status = true;
     private Set<RoleName> roles = new HashSet<>();
     private List<CartItem> cart = new ArrayList<>();
-
     public User() {
     }
 
@@ -123,15 +123,11 @@ public class User implements Serializable {
         this.cart = cart;
     }
 
+
+
     @Override
     public String toString() {
-        String role;
-        if (roles.contains(RoleName.ADMIN)) {
-            role = "ADMIN";
-        } else {
-            role = "USER";
-        }
-        return "ID: " + id + " | Name: " + name + " | Username: " + username + " | Role: " + role + " | Status: " + (status ? "🔓" : "🔒");
+        return "ID: " + id + " | Name: " + name + " | Username: " + username + " | Role: " + roles + " | Status: " + (status ? "🔓" : "🔒");
     }
 
 

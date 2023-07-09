@@ -1,8 +1,5 @@
 package ra.service;
 
-import ra.model.product.Category;
-import ra.model.user.User;
-
 import java.util.List;
 
 public interface IGenericService<T,E> {

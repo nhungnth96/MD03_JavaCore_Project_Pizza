@@ -1,23 +1,23 @@
 package ra.model.cart;
 
 import ra.config.Validation;
-import ra.model.product.Product;
+import ra.model.food.Food;
 
 import java.io.Serializable;
 
 public class CartItem implements Serializable {
     private int itemId;
-    private Product product;
-    private int quantity;
+    private Food itemFood;
+    private int itemQuantity;
 
     public CartItem() {
 
     }
 
-    public CartItem(int itemId, Product product, int quantity) {
+    public CartItem(int itemId, Food itemFood, int itemQuantity) {
         this.itemId = itemId;
-        this.product = product;
-        this.quantity = quantity;
+        this.itemFood = itemFood;
+        this.itemQuantity = itemQuantity;
     }
 
     public int getItemId() {
@@ -28,26 +28,27 @@ public class CartItem implements Serializable {
         this.itemId = itemId;
     }
 
-    public Product getProduct() {
-        return product;
+    public Food getItemFood() {
+        return itemFood;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setItemFood(Food itemFood) {
+        this.itemFood = itemFood;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getItemQuantity() {
+        return itemQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setItemQuantity(int itemQuantity) {
+        this.itemQuantity = itemQuantity;
     }
 
     @Override
     public String toString() {
-        return "ID: " + itemId + " | Product: " + product.getProductName() + "\n" +
-                "Price: " + Validation.formatPrice(product.getProductPrice()) + " | Quantity: " + quantity;
-
+        return "ID: " + itemId + " | Food: " + itemFood.getFoodName() +
+                " | Price: " + Validation.formatPrice(itemFood.getFoodPrice()) + " | Quantity: " + itemQuantity;
     }
+
+
 }

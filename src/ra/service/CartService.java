@@ -1,6 +1,5 @@
 package ra.service;
 
-import ra.database.DataBase;
 import ra.model.cart.CartItem;
 import ra.model.user.User;
 
@@ -22,25 +21,25 @@ public class CartService implements IGenericService<CartItem, Integer> {
     }
 
     @Override
-    public void save(CartItem cartItem) {
+    public void save(CartItem item) {
          List<CartItem> cart =  userLogin.getCart();
-        if (findById(cartItem.getItemId()) == null) {
+        if (findById(item.getItemId()) == null) {
             // add
             // kiểm tra sp tồn tại trong cart
-            CartItem productItem = findExistedProduct(cartItem.getProduct().getProductId());
+            CartItem itemFood = findExistedItem(item.getItemFood().getFoodId());
 
             // đã có trong cart
-            if(productItem!=null){
-                productItem.setQuantity((productItem.getQuantity())+cartItem.getQuantity());
+            if(itemFood!=null){
+                itemFood.setItemQuantity((itemFood.getItemQuantity())+item.getItemQuantity());
             }
 
             // chưa có trong cart
             else {
-                cart.add(cartItem);
+                cart.add(item);
             }
         } else {
             // update
-            cart.set(cart.indexOf(findById(cartItem.getItemId())),cartItem);
+            cart.set(cart.indexOf(findById(item.getItemId())),item);
         }
         // save to DB
         userService.save(userLogin);
@@ -76,9 +75,9 @@ public class CartService implements IGenericService<CartItem, Integer> {
         }
         return null;
     }
-    public CartItem findExistedProduct(int id){
+    public CartItem findExistedItem(int id){
         for(CartItem item:userLogin.getCart()){
-            if(item.getProduct().getProductId()==id){
+            if(item.getItemFood().getFoodId()==id){
                 return item;
             }
         }

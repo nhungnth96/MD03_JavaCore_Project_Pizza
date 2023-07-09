@@ -1,8 +1,8 @@
-package ra.model.product.pizza;
+package ra.model.food.pizza;
 
-import ra.model.product.Product;
+import ra.model.food.Food;
 
-public class Pizza extends Product {
+public class Pizza extends Food {
     private PizzaCrust pizzaCrust;
     private PizzaSize pizzaSize;
     private PizzaExtrasCheese pizzaExtrasCheese;

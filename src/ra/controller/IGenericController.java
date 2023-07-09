@@ -1,7 +1,5 @@
 package ra.controller;
 
-import ra.model.product.Product;
-
 import java.util.List;
 
 public interface IGenericController<T,E> {

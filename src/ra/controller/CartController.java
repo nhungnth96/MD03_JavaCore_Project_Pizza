@@ -1,7 +1,6 @@
 package ra.controller;
 
 import ra.model.cart.CartItem;
-import ra.model.product.Category;
 import ra.model.user.User;
 import ra.service.CartService;
 

@@ -1,6 +1,6 @@
 package ra.controller;
 
-import ra.model.product.Category;
+import ra.model.food.Category;
 import ra.service.CategoryService;
 
 import java.util.List;

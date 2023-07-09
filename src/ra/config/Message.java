@@ -4,7 +4,7 @@ public class Message {
     public static String getStatusByCode (byte code){
         switch (code) {
             case 1:
-                return "Waiting to confirm";
+                return "Pending confirm";
             case 2:
                 return "Accepted";
             case 3:

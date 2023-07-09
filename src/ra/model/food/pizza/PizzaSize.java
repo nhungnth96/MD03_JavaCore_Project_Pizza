@@ -1,4 +1,4 @@
-package ra.model.product.pizza;
+package ra.model.food.pizza;
 
 public enum PizzaSize {
     SMALL(10),

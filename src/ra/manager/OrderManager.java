@@ -2,8 +2,11 @@ package ra.manager;
 
 import ra.config.Alert;
 import ra.config.InputMethods;
+import ra.config.Validation;
+import ra.controller.FoodController;
 import ra.controller.OrderController;
 import ra.model.cart.CartItem;
+import ra.model.food.Food;
 import ra.model.order.Order;
 
 import java.util.ArrayList;
@@ -15,13 +18,12 @@ public class OrderManager {
         orderController = new OrderController();
         while (true) {
             System.out.println("======MY ORDER======");
-            System.out.println("1. View all order");
-            System.out.println("2. View waiting order");
-            System.out.println("3. View confirmed order");
-            System.out.println("4. View canceled order");
-            System.out.println("5. View order details");
-            System.out.println("6. Back");
-            System.out.println("Enter choice: ");
+                    System.out.println("1. View all order");
+                    System.out.println("2. View waiting order");
+                    System.out.println("3. View confirmed order");
+                    System.out.println("4. View canceled order");
+                    System.out.println("5. View order details");
+                    System.out.println("0. Back");
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
@@ -39,12 +41,12 @@ public class OrderManager {
                 case 5:
                     showOrderDetail();
                     break;
-                case 6:
+                case 0:
                     break;
                 default:
                     System.err.println(InputMethods.ERROR_ALERT);
             }
-            if (choice == 6) {
+            if (choice == 0) {
                 break;
             }
         }
@@ -83,16 +85,17 @@ public class OrderManager {
             System.err.println(Alert.NOT_FOUND);
             return;
         }
-        System.out.printf("----------Order Detail----------\n");
+        System.out.println("\n");
+        System.out.printf("----------Invoice----------\n");
         System.out.printf("          Id:%5d                   \n",order.getId());
         System.out.println("          Infomation                   ");
-        System.out.printf(" Receiver: " + order.getReceiver()+" |Phone: "+order.getPhoneNumber()+"\n");
-        System.out.println("          Address " + order.getAddress()                   );
+        System.out.printf("Receiver: " + order.getReceiver()+" | Phone: "+order.getPhoneNumber()+"\n");
+        System.out.println("Address " + order.getAddress()                   );
         System.out.println("----------Detail----------");
         for (CartItem item : order.getOrderDetail()) {
             System.out.println(item);
         }
-        System.out.println("Total: "+order.getTotal());
+        System.out.println("Total: "+ Validation.formatPrice(order.getTotal()));
         System.out.println("--------Thank you---------");;
         if(order.getStatus()==1){
             System.out.println("Do you want to cancel this order?");
@@ -101,7 +104,13 @@ public class OrderManager {
             System.out.println("Enter your choice: ");
             int choice = InputMethods.getInteger();
             if(choice==1){
-                order.setStatus((byte) 2);
+                order.setStatus((byte) 3);
+                for(CartItem item: order.getOrderDetail()){
+                    FoodController foodController = new FoodController();
+                    Food food = foodController.findById(item.getItemFood().getFoodId());
+                    food.setFoodStock(food.getFoodStock()+ item.getItemQuantity());
+                    foodController.save(food);
+                }
                 orderController.save(order);
             }
         }

@@ -1,11 +1,8 @@
-package ra.model.product;
-
-import ra.config.InputMethods;
+package ra.model.food;
 
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    // pizza, sides, dessert, drinks
     private int categoryId;
     private String categoryName;
 
@@ -17,20 +14,20 @@ public class Category implements Serializable {
         this.categoryName = name;
     }
 
-    public int getId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setId(int id) {
-        this.categoryId = id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getName() {
+    public String getCategoryName() {
         return categoryName;
     }
 
-    public void setName(String name) {
-        this.categoryName = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     @Override

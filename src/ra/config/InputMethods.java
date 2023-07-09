@@ -6,9 +6,7 @@ public final class InputMethods {
     public static final String ERROR_ALERT = "Invalid format! Please try again....";
     public static final String EMPTY_ALERT = "The input field cannot be blanked! Please try again....";
     public static final String ERROR_NUMBER = "Please enter an integer greater than 0";
-    public static final String ERROR_SPACE = "The input contains white spaces";
     public static final String ERROR_STOCK = "Please enter a quantity of stock greater than 10";
-    public static final String ERROR_PRODUCT_ID = "Please";
     /*========================================Input Method Start========================================*/
 
     /**
@@ -21,10 +19,7 @@ public final class InputMethods {
                 System.err.println(EMPTY_ALERT);
                 continue;
             }
-            if (!result.matches("\\S+")) {
-                System.err.println(ERROR_SPACE);
-                continue;
-            }
+
             return result;
         }
     }
@@ -163,16 +158,6 @@ public final class InputMethods {
         }
     }
 
-    public static String getProductId() {
-        while (true) {
-            String result = getString();
-            if (result.length() > 3) {
-                return result;
-            } else {
-                System.err.println(ERROR_PRODUCT_ID);
-                ;
-            }
-        }
-    }
+
 
 }

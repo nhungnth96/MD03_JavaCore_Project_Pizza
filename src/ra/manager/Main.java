@@ -5,13 +5,14 @@ import ra.config.Alert;
 import ra.config.InputMethods;
 import ra.config.Validation;
 import ra.controller.CategoryController;
-import ra.controller.ProductController;
+import ra.controller.FoodController;
 import ra.controller.UserController;
 import ra.model.user.RoleName;
 import ra.model.user.User;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
     // currentLogin chạy toàn cục
@@ -20,7 +21,7 @@ public class Main {
     private static UserController userController = new UserController();
     //    private static CartController cartController = new CartController(currentLogin);
     private static CategoryController categoryController = new CategoryController();
-    private static ProductController productController = new ProductController();
+    private static FoodController foodController = new FoodController();
 
     // ===============================HOME PAGE===============================
     public static void homePage() {
@@ -30,7 +31,7 @@ public class Main {
             System.out.println("1. Login");
             System.out.println("2. Register");
             System.out.println("3. Continue without login");
-            System.out.println("4. Exit");
+            System.out.println("0. Exit");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
@@ -43,7 +44,7 @@ public class Main {
                 case 3:
                     guestPage();
                     break;
-                case 4:
+                case 0:
                     loop = false;
                     System.out.println("Thank you!!!");
                     System.exit(0);
@@ -61,6 +62,10 @@ public class Main {
         String username;
         while (true) {
             username = InputMethods.getString();
+            if(!Validation.validateSpaces(username)){
+                System.err.println(Alert.ERROR_SPACE);
+                continue;
+            }
             if (Validation.validateUserName(username)) {
                 break;
             }
@@ -70,6 +75,10 @@ public class Main {
         String password;
         while (true) {
             password = InputMethods.getString();
+            if(!Validation.validateSpaces(password)){
+                System.err.println(Alert.ERROR_SPACE);
+                continue;
+            }
             if (Validation.validatePassword(password)) {
                 break;
             }
@@ -99,19 +108,25 @@ public class Main {
 
     // ===============================SIGN UP=============================== DONE
     public static void register() {
+        User user = new User();
         System.out.println("======SIGN UP=====");
-        int id = userController.getNewId();
+        user.setId(userController.getNewId());
         System.out.println("Enter name: ");
-        String name = InputMethods.getString();
+        user.setName(InputMethods.getString());
         System.out.println("Enter username: ");
         String username;
         while (true) {
             username = InputMethods.getString();
+            if(!Validation.validateSpaces(username)){
+                System.err.println(Alert.ERROR_SPACE);
+                continue;
+            }
             if (userController.checkExistedUsername(username)) {
                 System.err.println(Alert.ERROR_EXISTED);
                 continue;
             }
             if (Validation.validateUserName(username)) {
+                user.setUsername(username);
                 break;
             }
             System.err.println(Alert.ERROR_USERNAME);
@@ -121,7 +136,12 @@ public class Main {
         String password;
         while (true) {
             password = InputMethods.getString();
+            if(!Validation.validateSpaces(password)){
+                System.err.println(Alert.ERROR_SPACE);
+                continue;
+            }
             if (Validation.validatePassword(password)) {
+                user.setPassword(password);
                 break;
             }
             System.err.println(Alert.ERROR_PASSWORD);
@@ -130,16 +150,21 @@ public class Main {
         String email;
         while (true) {
             email = InputMethods.getString();
+            if(!Validation.validateSpaces(email)){
+                System.err.println(Alert.ERROR_SPACE);
+                continue;
+            }
             if (userController.checkExistedEmail(email)) {
                 System.err.println(Alert.ERROR_EXISTED);
                 continue;
             }
             if (Validation.validateEmail(email)) {
+                user.setEmail(email);
                 break;
             }
             System.err.println(Alert.ERROR_EMAIL);
         }
-        User user = new User(id, name, username, password,email, new HashSet<>(Arrays.asList(RoleName.USER)));
+        user.setRoles(new HashSet<>(Arrays.asList(RoleName.USER)));
         userController.save(user);
         System.out.println(Alert.SUCCESS);
         System.out.println("Please login");
@@ -149,23 +174,23 @@ public class Main {
     public static void guestPage() {
         while (true) {
             System.out.println("\u001B[33mYou must be login to buy product\u001B[0m");
-            System.out.println("1. View Product");
-            System.out.println("2. Search Product");
-            System.out.println("3. Back");
+            System.out.println("1. View food menu");
+            System.out.println("2. Search food menu");
+            System.out.println("0. Back");
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
-                    ProductManager.showAllProduct(productController.getAll());
+                    FoodManager.viewFoodMenu();
                     break;
                 case 2:
-                    ProductManager.searchProduct(productController.getAll());
+                    FoodManager.searchFoodMenu();
                     break;
-                case 3:
+                case 0:
                     break;
                 default:
                     System.err.println(InputMethods.ERROR_ALERT);
             }
-            if (choice == 3) {
+            if (choice == 0) {
                 break;
             }
         }
@@ -174,17 +199,17 @@ public class Main {
     // ===============================USER PAGE===============================
     public static void userPage() {
         while (true) {
-            System.out.println("1. View Menu"); // okay
+            System.out.println("1. View food menu"); // okay
             System.out.println("2. Add to cart");
             System.out.println("3. My Cart");
             System.out.println("4. My Order");
             System.out.println("5. My Profile"); // done
-            System.out.println("6. Log out");
+            System.out.println("0. Log out");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
-                    ProductManager.showAllProduct(productController.getAll());
+                    FoodManager.viewFoodMenu();
                     // View menu
                     break;
                 case 2:
@@ -201,7 +226,8 @@ public class Main {
 //                    System.out.println("5. Back");
                     break;
                 case 4:
-                    new OrderManager();
+//                    new OrderManager();
+                    new OrderManagerV2();
 //                    System.out.println("======MY ORDER======");
 //                    System.out.println("1. View all order");
 //                    System.out.println("2. View waiting order");
@@ -218,13 +244,13 @@ public class Main {
 //                    System.out.println("3. Change Password");
 //                    System.out.println("4. Back");
                     break;
-                case 6:
+                case 0:
                     logout();
                     break;
                 default:
                     System.err.println(InputMethods.ERROR_ALERT);
             }
-            if (choice == 6) {
+            if (choice == 0) {
                 break;
             }
         }
@@ -236,9 +262,9 @@ public class Main {
         while (true) {
             System.out.println("1. User Manager"); // done
             System.out.println("2. Category Manager"); // done
-            System.out.println("3. Product Manager"); // done
+            System.out.println("3. Food Manager"); // done
             System.out.println("4. Order Manager"); // not yet
-            System.out.println("5. Log out");
+            System.out.println("0. Log out");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
@@ -247,38 +273,43 @@ public class Main {
 //                    System.out.println("====USER MANAGER====");
 //                    System.out.println("1. Show all account");
 //                    System.out.println("2. Block / Unblock account");
-//                    System.out.println("3. Back");
+//                    System.out.println("3. Change account's role ");
+//                    System.out.println("4. Create account");
+//                    System.out.println("5. Back");
                     break;
                 case 2:
                     new CategoryManager(categoryController);
 //                    System.out.println("======CATEGORY MANAGER======");
-//                    System.out.println("1. Show category");
+//                    System.out.println("1. View category");
 //                    System.out.println("2. Create category");
 //                    System.out.println("3. Edit category");
 //                    System.out.println("4. Delete category");
-//                    System.out.println("5. Back");
+//                    System.out.println("5. Search category");
+//                    System.out.println("6. Back");
                     break;
                 case 3:
-                    new ProductManager(productController, categoryController);
-//                    System.out.println("======PRODUCT MANAGER======");
-//                    System.out.println("1. Show product");
-//                    System.out.println("2. Search product");
-//                    System.out.println("3. Create product");
-//                    System.out.println("4. Edit product");
-//                    System.out.println("5. Delete product");
-//                    System.out.println("6. Change status");
-//                    System.out.println("7. Back");
+                    new FoodManager(foodController, categoryController);
+//                    System.out.println("======FOOD MANAGER======");
+//                    System.out.println("1. View food");
+//                    System.out.println("2. Search food");
+//                    System.out.println("3. Create food");
+//                    System.out.println("4. Edit food");
+//                    System.out.println("5. Delete food");
+//                    System.out.println("6. Change food status");
+//                    System.out.println("7. Fill food stock");
+//                    System.out.println("8. Back");
+//                    System.out.println("Enter choice: ");
                     break;
                 case 4:
-                    // not yet
+                    new OrderManagerV2();
                     break;
-                case 5:
+                case 0:
                     logout();
                     break;
                 default:
                     System.err.println(InputMethods.ERROR_ALERT);
             }
-            if (choice == 5) {
+            if (choice == 0) {
                 break;
             }
         }

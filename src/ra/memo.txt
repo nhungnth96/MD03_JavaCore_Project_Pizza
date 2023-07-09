@@ -30,31 +30,67 @@
 "\u001B[33mEmpty category list\u001B[0m"
 
 // tăng giảm stock
-ProductController productController = new ProductController();
+ProductController foodController = new ProductController();
         int newQuantity;
         while (true){
             newQuantity = InputMethods.getInteger();
-            Product product = item.getProduct();
-            if(newQuantity <= item.getQuantity()+product.getStock()){
-                product.setStock(product.getStock()+item.getQuantity());
+            Product food = item.getProduct();
+            if(newQuantity <= item.getQuantity()+food.getStock()){
+                food.setStock(food.getStock()+item.getQuantity());
                 item.setQuantity(newQuantity);
-                product.setStock(product.getStock()-item.getQuantity());
-                productController.save(product);
+                food.setStock(food.getStock()-item.getQuantity());
+                foodController.save(food);
                 cartController.save(item);
                 break;
             }
-            System.err.println("Can only buy more than "+ item.getQuantity()+product.getStock() + "products");
+            System.err.println("Can only buy more than "+ item.getQuantity()+food.getStock() + "products");
 // add to cart thay đổi số lượng
       int quantity;
         while (true) {
             quantity = InputMethods.getInteger();
-            if (quantity <= product.getStock()){
+            if (quantity <= food.getStock()){
                 break;
             }
-            System.err.println("Only have " +product.getStock() + " in stock, please reduce");
+            System.err.println("Only have " +food.getStock() + " in stock, please reduce");
         }
         item.setQuantity(quantity);
         cartController.save(item);
-        product.setStock(product.getStock()- item.getQuantity());
-        productController.save(product);
+        food.setStock(food.getStock()- item.getQuantity());
+        foodController.save(food);
         cartController.save(item);
+
+        	╔═════════════════════════════════════════════════════╗
+        	║                  	▪ ▪                            ║
+        	║                 ▪ ▪ ▪ ▪                      ║
+        	║               ▪ ▪ ▪ ▪ ▪ ▪                                      ║
+        	║             ▪ ▪ ▪     ▪ ▪ ▪                                            ║
+        	║           ▪ ▪ ▪ ▪     ▪ ▪ ▪ ▪                                    ║
+        	║         ◾ ◾ ◾  ▪ ▪       ▪ ▪ ▪ ▪                                          ║
+        	║       ◾ ◾ ◾ ◾ ◾ ◾     ▪ ▪ ▪ ▪ ▪ ▪ ▪                                        ║
+        	║     ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾  ▪ ▪ ▪ ▪ ▪ ▪                                       ║
+        	║    ◾      ◾ ◾ ◾ ◾ ◾      ◾ ◾    ▪ ▪ ▪                               ║
+        	║  ◾       ◾ ◾ ◾       ◾ ◾ ◾                                        ║
+        	║    ◾ ◾      ◾ ◾ ◾ ◾ ◾      ◾ ◾                                          ║
+        	║      ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾                               ║
+        	║        ◾ ◾ ◾ ◾ ◾ ◾ ◾                              ║
+        	║             ◾ ◾ ◾                            ║
+        	║                                                     ║
+        	║                                                     ║
+        	║                                                     ║
+        	║                                                     ║
+        	║                                                     ║
+        	╚═════════════════════════════════════════════════════╝
+  	                ···
+                  ·······
+                ···········
+              ······   ······
+            ·······     ·······
+         •••  ······   ······
+       •••••••  ···········
+     •••••••••••  ·······
+   ••   •••••   ••  ···
+ •••     •••     •••
+   ••   •••••   ••
+     •••••••••••
+       •••••••
+         •••

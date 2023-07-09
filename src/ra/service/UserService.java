@@ -5,10 +5,7 @@ import ra.model.user.RoleName;
 import ra.model.user.User;
 import ra.database.DataBase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class UserService implements IGenericService<User, Integer> {
     private List<User> users;
@@ -76,6 +73,24 @@ public class UserService implements IGenericService<User, Integer> {
         }
         changeStatusUser.setStatus(!changeStatusUser.isStatus());
         save(changeStatusUser);
+    }
+    public void changeRole(Integer userId) {
+        User changeRoleUser = findById(userId);
+        if (changeRoleUser == null) {
+            System.out.println(Alert.NOT_FOUND);
+            return; // dừng hàm
+        }
+        Set<RoleName> currentRoles = changeRoleUser.getRoles();
+
+            if(currentRoles.contains(RoleName.USER)&&currentRoles.size()==1){
+                currentRoles.add(RoleName.MANAGER);
+            } else {
+                System.err.println("This role has been set, choose another role");
+                return;
+            }
+
+        changeRoleUser.setRoles(currentRoles);
+        save(changeRoleUser);
     }
 
     public User checkExistedAccount(String username, String password) {

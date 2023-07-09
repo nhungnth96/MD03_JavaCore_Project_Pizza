@@ -17,7 +17,7 @@ public class ProfileManager {
             System.out.println("1. View Profile");
             System.out.println("2. Edit Profile");
             System.out.println("3. Change Password");
-            System.out.println("4. Back");
+            System.out.println("0. Back");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
@@ -30,12 +30,12 @@ public class ProfileManager {
                 case 3:
                     changePassword();
                     break;
-                case 4:
+                case 0:
                     break;
                 default:
                     System.err.println(InputMethods.ERROR_ALERT);
             }
-            if (choice == 4) {
+            if (choice == 0) {
                 break;
             }
         }

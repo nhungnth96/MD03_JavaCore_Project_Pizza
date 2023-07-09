@@ -1,7 +1,5 @@
 package ra.config;
 
-import ra.service.UserService;
-
 import java.util.regex.Pattern;
 
 public class Validation {
@@ -26,11 +24,17 @@ public class Validation {
         return Pattern.matches(regex, tel);
     }
 
+    public static boolean validateSpaces(String str) {
+        String regex = "\\S+";
+        return Pattern.matches(regex, str);
+    }
+
     public static String formatPrice(Double price) {
         if (price % 1 == 0) {
             return String.format(String.valueOf(price)).replaceAll("\\.0+$", "") + ".000₫";
         }
         return price + "00₫";
     }
+
 
 }

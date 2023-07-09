@@ -1,6 +1,6 @@
 package ra.service;
 
-import ra.model.product.Category;
+import ra.model.food.Category;
 import ra.database.DataBase;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ public class CategoryService implements IGenericService<Category, Integer> {
 
     @Override
     public void save(Category category) {
-        if (findById(category.getId()) == null) {
+        if (findById(category.getCategoryId()) == null) {
             // add
             categories.add(category);
         } else {
             // update
-            categories.set(categories.indexOf(findById(category.getId())), category);
+            categories.set(categories.indexOf(findById(category.getCategoryId())), category);
         }
         // save to DB
         DataBase.writeToFile(categories, DataBase.CATEGORY_PATH);
@@ -47,7 +47,7 @@ public class CategoryService implements IGenericService<Category, Integer> {
     public Category findById(Integer id) {
         // trả về object
         for (Category category : categories) {
-            if (category.getId() == id) {
+            if (category.getCategoryId() == id) {
                 return category;
             }
         }
@@ -57,8 +57,8 @@ public class CategoryService implements IGenericService<Category, Integer> {
     public int getNewId() {
         int maxId = 0;
         for (Category category : categories) {
-            if (category.getId() > maxId) {
-                maxId = category.getId();
+            if (category.getCategoryId() > maxId) {
+                maxId = category.getCategoryId();
             }
         }
         return maxId + 1;

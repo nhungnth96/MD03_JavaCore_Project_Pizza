@@ -1,13 +1,16 @@
 package ra.model.order;
 
 import ra.config.Message;
+import ra.config.Validation;
 import ra.model.cart.CartItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     private int id;
     private int userId;
     private double total;
@@ -15,7 +18,7 @@ public class Order {
     private String receiver;
     private String phoneNumber;
     private String address;
-    private byte status = 0;
+    private byte status = 1;
     private List<CartItem> orderDetail = new ArrayList<>();
 
     public Order() {
@@ -107,13 +110,16 @@ public class Order {
 
     @Override
     public String toString() {
-        return
-                "ID: " + id + " | Date: " + buyDate +
-                        " Total: " + total +
-                        " Status: " + Message.getStatusByCode(status) +
-                        " Receiver: " + receiver +
-                        " Phone number:" + phoneNumber +
-                        " Address: " + address
+        return "---------------------------------------"+"\n"+
+                "ID: " + id + " | Date: " + buyDate + "\n" +
+                "Detail: "  +
+                orderDetail.toString().replace(", ","\n").replace("[","\n").replace("]","\n").replace("ID: ","") +
+        "Total: " + Validation.formatPrice(total) + " | Status: " + Message.getStatusByCode(status) + "\n" +
+                        "Receiver: " + receiver + "\n"+
+                        "Phone number: " + phoneNumber + "\n"+
+                        "Address: " + address
                 ;
     }
+
+
 }

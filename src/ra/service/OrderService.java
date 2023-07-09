@@ -3,21 +3,23 @@ package ra.service;
 import ra.database.DataBase;
 import ra.manager.Main;
 import ra.model.order.Order;
+import ra.model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
     private List<Order> orders;
-
-    public OrderService() {
-        List<Order> orderList = (List<Order>) DataBase.readFromFile(DataBase.PRODUCT_PATH);
+        public OrderService() {
+        List<Order> orderList = (List<Order>) DataBase.readFromFile(DataBase.ORDER_PATH);
         if (orderList == null) {
             orderList = new ArrayList<>();
         }
         this.orders = orderList;
     }
-
+    public List<Order> getAll() {
+        return orders;
+    }
     public void save(Order order) {
         if (findById(order.getId()) == null) {
             // add
@@ -49,6 +51,14 @@ public class OrderService {
         }
         return null;
     }
+    public Order findByIdForAdmin(int id) {
+        for (Order order : orders) {
+            if (order.getId() == id) {
+                return order;
+            }
+        }
+        return null;
+    }
 
     public List<Order> findOrderByUserId() {
         List<Order> findList = new ArrayList<>();
@@ -59,4 +69,5 @@ public class OrderService {
         }
         return findList;
     }
+
 }
