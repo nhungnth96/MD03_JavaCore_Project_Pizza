@@ -7,12 +7,12 @@ import ra.config.Validation;
 import ra.controller.CategoryController;
 import ra.controller.FoodController;
 import ra.controller.UserController;
+import ra.model.food.Category;
+import ra.model.food.Food;
 import ra.model.user.RoleName;
 import ra.model.user.User;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
     // currentLogin chạy toàn cục
@@ -199,11 +199,14 @@ public class Main {
     // ===============================USER PAGE===============================
     public static void userPage() {
         while (true) {
-            System.out.println("1. View food menu"); // okay
+            System.out.println("1. View food menu");
             System.out.println("2. Add to cart");
-            System.out.println("3. My Cart");
-            System.out.println("4. My Order");
-            System.out.println("5. My Profile"); // done
+            System.out.println("3. Add to favor list");
+            System.out.println("4. My Cart");
+            System.out.println("5. My Favor"); // new feature
+            System.out.println("6. My Order");
+            System.out.println("7. My Profile");
+            System.out.println("8. My Wallet"); // new feature
             System.out.println("0. Log out");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
@@ -213,10 +216,15 @@ public class Main {
                     // View menu
                     break;
                 case 2:
-                    CartManager.addItemToCart();
+//                    CartManager.addItemToCart();
+                    CartManager.addItemToCartV2();
                     // Add to cart
                     break;
                 case 3:
+                    FavorManager.addItemToFavorList();
+                    // Add to favor
+                    break;
+                case 4:
                     new CartManager();
 //                    System.out.println("======MY CART======");
 //                    System.out.println("1. View Cart");
@@ -225,18 +233,24 @@ public class Main {
 //                    System.out.println("4. Clear Cart");
 //                    System.out.println("5. Back");
                     break;
-                case 4:
+                case 5:
+                    new FavorManager();
+                    // Add to favor
+                    break;
+                case 6:
 //                    new OrderManager();
                     new OrderManagerV2();
 //                    System.out.println("======MY ORDER======");
-//                    System.out.println("1. View all order");
-//                    System.out.println("2. View waiting order");
-//                    System.out.println("3. View confirmed order");
-//                    System.out.println("4. View canceled order");
-//                    System.out.println("5. View order details");
-//                    System.out.println("6. Back");
+//                    System.out.println("1. View all order"); // contains detail - okay
+//                    System.out.println("2. View pending confirm order"); // okay
+//                    System.out.println("3. View delivering order"); // view shipper road
+//                    System.out.println("4. View delivered order"); // view invoice
+//                    System.out.println("5. View canceled order");
+//                    System.out.println("6. Cancel order"); // okay
+//                    System.out.println("7. Give a feedback");
+//                    System.out.println("0. Back");
                     break;
-                case 5:
+                case 7:
                     new ProfileManager(userController);
 //                    System.out.println("====MY PROFILE====");
 //                    System.out.println("1. View Profile");
@@ -323,6 +337,7 @@ public class Main {
 
     public static void main(String[] args) {
         homePage();
+
     }
 
 }

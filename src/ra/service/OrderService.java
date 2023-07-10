@@ -21,15 +21,23 @@ public class OrderService {
         return orders;
     }
     public void save(Order order) {
-        if (findById(order.getId()) == null) {
+//        for (int i = 0; i < orders.size(); i++) {
+//            if (orders.get(i).getId()==order.getId()){
+//                orders.set(i,order);
+//                DataBase.writeToFile(orders, DataBase.ORDER_PATH);
+//                return;
+//            }
+//        }
+        if (findByIdForAdmin(order.getId()) == null) {
             // add
             orders.add(order);
         } else {
             // update
-            orders.set(orders.indexOf(findById(order.getId())), order);
+            orders.set(orders.indexOf(findByIdForAdmin(order.getId())), order);
         }
-        // save to DB
-        DataBase.writeToFile(orders, DataBase.ORDER_PATH);
+//         save to DB
+                DataBase.writeToFile(orders, DataBase.ORDER_PATH);
+
 
     }
 

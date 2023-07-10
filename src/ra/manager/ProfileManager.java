@@ -17,6 +17,7 @@ public class ProfileManager {
             System.out.println("1. View Profile");
             System.out.println("2. Edit Profile");
             System.out.println("3. Change Password");
+            System.out.println("3. Total spending"); // new feature
             System.out.println("0. Back");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();

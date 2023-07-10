@@ -9,7 +9,7 @@ import java.util.List;
 public class FoodService implements IGenericService<Food,Integer> {
     private List<Food> foods;
     public FoodService() {
-        List<Food> foodList = (List<Food>) DataBase.readFromFile(DataBase.FOOT_PATH);
+        List<Food> foodList = (List<Food>) DataBase.readFromFile(DataBase.FOOD_PATH);
         if (foodList == null) {
             foodList = new ArrayList<>();
         }
@@ -31,7 +31,7 @@ public class FoodService implements IGenericService<Food,Integer> {
             foods.set(foods.indexOf(findById(food.getFoodId())), food);
         }
         // save to DB
-        DataBase.writeToFile(foods, DataBase.FOOT_PATH);
+        DataBase.writeToFile(foods, DataBase.FOOD_PATH);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class FoodService implements IGenericService<Food,Integer> {
         // remove object, findById(id) trả về object User
         foods.remove(findById(id));
         // save to DB
-        DataBase.writeToFile(foods, DataBase.FOOT_PATH);
+        DataBase.writeToFile(foods, DataBase.FOOD_PATH);
     }
 
     @Override

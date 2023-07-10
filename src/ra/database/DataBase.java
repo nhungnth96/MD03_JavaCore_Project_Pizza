@@ -11,8 +11,7 @@ import java.util.HashSet;
 public class DataBase {
     public static final String USER_PATH = "src\\ra\\database\\user.txt";
     public static final String CATEGORY_PATH = "src\\ra\\database\\category.txt";
-    public static final String FOOT_PATH = "src\\ra\\database\\food.txt";
-    public static final String CART_PATH = "src\\ra\\database\\cart.txt";
+    public static final String FOOD_PATH = "src\\ra\\database\\food.txt";
     public static final String ORDER_PATH = "src\\ra\\database\\order.txt";
     public static final User admin = new User(0,"admin", "admin", "Admin@123", new HashSet<>(Arrays.asList(RoleName.ADMIN, RoleName.USER)));
     public static void writeToFile(Object o, String path) {

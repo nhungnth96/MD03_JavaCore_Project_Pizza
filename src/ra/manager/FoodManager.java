@@ -300,7 +300,7 @@ public class FoodManager {
             System.err.println(Alert.NOT_FOUND);
             return;
         }
-        System.out.println(editFood);
+        System.out.println(editFood.displayForAdmin());;
         editFood.inputData(categoryList);
         foodController.save(editFood);
         System.out.println(Alert.SUCCESS);

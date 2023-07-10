@@ -94,3 +94,62 @@ ProductController foodController = new ProductController();
      •••••••••••
        •••••••
          •••
+
+
+          if(food.getFoodCategory().getCategoryName().equals("Pizza")){
+                     Food pizza = new Food();
+                     pizza.setFoodId(food.getFoodId());
+                     pizza.setFoodName(food.getFoodName());
+                     pizza.setFoodIngredient(food.getFoodIngredient());
+                     pizza.setFoodCategory(food.getFoodCategory());
+                     pizza.setFoodStock(food.getFoodStock());
+                     pizza.setFoodStatus(food.isFoodStatus());
+                     pizza.setFoodPrice(food.getFoodPrice());
+                     System.out.println("Choose pizza crust: ");
+                     for (int i = 0; i < PizzaCrust.values().length; i++) {
+                         System.out.println((i + 1) + ". " + PizzaCrust.values()[i]);
+                     }
+                     while(true){
+                         int crustChoice = InputMethods.getInteger();
+                         if (crustChoice >= 1 && crustChoice <= PizzaCrust.values().length) {
+                             pizza.setPizzaCrust(PizzaCrust.values()[crustChoice-1]);
+                             break;
+                         }
+                             System.err.println(InputMethods.ERROR_ALERT);
+                     }
+                     System.out.println("Choose pizza size: ");
+                     for (int i = 0; i < PizzaSize.values().length; i++) {
+                         System.out.println((i + 1) + ". " + PizzaSize.values()[i]);
+                     }
+                     while(true){
+                         int sizeChoice = InputMethods.getInteger();
+                         if (sizeChoice >= 1 && sizeChoice <= PizzaSize.values().length) {
+                             pizza.setPizzaSize(PizzaSize.values()[sizeChoice-1]);
+         //                    pizza.setFoodPrice(pizza.getFoodPrice()+pizza.getPizzaSize().getPrice());
+                             break;
+                         }
+                         System.err.println(InputMethods.ERROR_ALERT);
+                     }
+                     System.out.println("Choose pizza extras cheese: ");
+                     for (int i = 0; i < PizzaExtrasCheese.values().length; i++) {
+                         System.out.println((i + 1) + ". " + PizzaExtrasCheese.values()[i]);
+
+                     }
+                     while(true){
+                         int extrasCheeseChoice = InputMethods.getInteger();
+                         if (extrasCheeseChoice >= 1 && extrasCheeseChoice <= PizzaExtrasCheese.values().length) {
+                             pizza.setPizzaExtrasCheese(PizzaExtrasCheese.values()[extrasCheeseChoice-1]);
+         //                    pizza.setFoodPrice(pizza.getFoodPrice()+food.getPizzaExtrasCheese().getPrice());
+                             break;
+                         }
+                         System.err.println(InputMethods.ERROR_ALERT);
+                     }
+                     foodController.save(pizza);
+                     CartItem item = new CartItem();
+                     item.setItemId(cartController.getNewId());
+                     item.setItemFood(pizza);
+                     System.out.println("Enter quantity: ");
+                     item.setItemQuantity(InputMethods.getInteger());
+                     cartController.save(item);
+                     System.out.println(Alert.SUCCESS);
+                 }

@@ -1,11 +1,11 @@
-package ra.model.food.pizza;
+package ra.model.food;
 
 public enum PizzaExtrasCheese {
     // extra,double,triple + price => toal: pizza price + extras
     NONE(0),
-    EXTRA_CHEESE(3),
-    DOUBLE_CHEESE(5),
-    TRIPLE_CHEESE(7);
+    EXTRA_CHEESE(24.5),
+    DOUBLE_CHEESE(44.5),
+    TRIPLE_CHEESE(64);
 
     private double price;
 
@@ -16,4 +16,5 @@ public enum PizzaExtrasCheese {
     public double getPrice() {
         return price;
     }
+//    NONE,EXTRA_CHEESE, DOUBLE_CHEESE,TRIPLE_CHEESE
 }

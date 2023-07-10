@@ -7,7 +7,7 @@ import ra.config.Validation;
 import java.io.Serializable;
 import java.util.List;
 
-public class Food implements Serializable {
+public class Food implements Serializable  {
     private int foodId;
     private String foodName;
     private String foodIngredient;
@@ -15,7 +15,6 @@ public class Food implements Serializable {
     private double foodPrice;
     private int foodStock;
     private boolean foodStatus = true;
-
     public Food() {
     }
 
@@ -85,6 +84,8 @@ public class Food implements Serializable {
         this.foodStatus = foodStatus;
     }
 
+
+
     @Override
     public String toString() {
         return
@@ -105,7 +106,6 @@ public class Food implements Serializable {
                 "Price: " +  Validation.formatPrice(foodPrice) +
                         " | Stock: " + foodStock
                         ;
-
     }
 
 
@@ -140,5 +140,7 @@ public class Food implements Serializable {
             }
         }
     }
+
+
 
 }

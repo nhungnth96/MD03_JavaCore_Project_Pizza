@@ -1,4 +1,4 @@
-package ra.model.cart;
+package ra.model.favor;
 
 import ra.config.Validation;
 import ra.model.food.Food;
@@ -8,38 +8,37 @@ import ra.model.food.PizzaSize;
 
 import java.io.Serializable;
 
-public class CartItem implements Serializable {
-    private int itemId;
-    private Food itemFood;
+public class FavorItem implements Serializable {
+    private int favorId;
+    private Food favorFood;
     private int itemQuantity;
     private PizzaCrust pizzaCrust = PizzaCrust.MEDIUM;
     private PizzaSize pizzaSize = PizzaSize.MEDIUM;
     private PizzaExtrasCheese pizzaExtrasCheese = PizzaExtrasCheese.NONE;
     private double pizzaPrice;
-    public CartItem() {
-
+    public FavorItem() {
     }
 
-    public CartItem(int itemId, Food itemFood, int itemQuantity) {
-        this.itemId = itemId;
-        this.itemFood = itemFood;
+    public FavorItem(int favorId, Food favorFood, int itemQuantity) {
+        this.favorId = favorId;
+        this.favorFood = favorFood;
         this.itemQuantity = itemQuantity;
     }
 
-    public int getItemId() {
-        return itemId;
+    public int getFavorId() {
+        return favorId;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setFavorId(int favorId) {
+        this.favorId = favorId;
     }
 
-    public Food getItemFood() {
-        return itemFood;
+    public Food getFavorFood() {
+        return favorFood;
     }
 
-    public void setItemFood(Food itemFood) {
-        this.itemFood = itemFood;
+    public void setFavorFood(Food favorFood) {
+        this.favorFood = favorFood;
     }
 
     public int getItemQuantity() {
@@ -84,15 +83,13 @@ public class CartItem implements Serializable {
 
     @Override
     public String toString() {
-        if(itemFood.getFoodCategory().getCategoryName().equals("Pizza")){
-            return "ID: " + itemId + " | " +itemFood.getFoodCategory().getCategoryName() +": "+ itemFood.getFoodName() + "\n"+
+        if(favorFood.getFoodCategory().getCategoryName().equals("Pizza")){
+            return "ID: " + favorId + " | " +favorFood.getFoodCategory().getCategoryName() +": "+ favorFood.getFoodName() + "\n"+
                     "Crust: "+ pizzaCrust + " | Size: " +pizzaSize + " | Extras: "+pizzaExtrasCheese+ "\n"+
                     "Price: " + Validation.formatPrice(pizzaPrice) + " | Quantity: " + itemQuantity;
         } else {
-            return "ID: " + itemId+ " | " + itemFood.getFoodCategory().getCategoryName()+": " + itemFood.getFoodName() + "\n"+
-                    "Price: " + Validation.formatPrice(itemFood.getFoodPrice()) + " | Quantity: " + itemQuantity;
+            return "ID: " + favorId+ " | " + favorFood.getFoodCategory().getCategoryName()+": " + favorFood.getFoodName() + "\n"+
+                    "Price: " + Validation.formatPrice(favorFood.getFoodPrice()) + " | Quantity: " + itemQuantity;
         }
     }
-
-
 }

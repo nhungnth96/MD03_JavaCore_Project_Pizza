@@ -1,9 +1,9 @@
-package ra.model.food.pizza;
+package ra.model.food;
 
 public enum PizzaSize {
-    SMALL(10),
-    MEDIUM(15),
-    LARGE(20);
+    SMALL(0),
+    MEDIUM(88.5),
+    LARGE(78.5);
 
     private double price;
 
@@ -14,4 +14,6 @@ public enum PizzaSize {
     public double getPrice() {
         return price;
     }
+
+//    SMALL,MEDIUM,LARGE
 }

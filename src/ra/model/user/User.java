@@ -1,6 +1,7 @@
 package ra.model.user;
 
 import ra.model.cart.CartItem;
+import ra.model.favor.FavorItem;
 import ra.model.order.Order;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public class User implements Serializable {
     private boolean status = true;
     private Set<RoleName> roles = new HashSet<>();
     private List<CartItem> cart = new ArrayList<>();
+    private List<FavorItem> favor = new ArrayList<>();
     public User() {
     }
 
@@ -123,7 +125,13 @@ public class User implements Serializable {
         this.cart = cart;
     }
 
+    public List<FavorItem> getFavor() {
+        return favor;
+    }
 
+    public void setFavor(List<FavorItem> favor) {
+        this.favor = favor;
+    }
 
     @Override
     public String toString() {

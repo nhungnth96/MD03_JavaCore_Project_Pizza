@@ -30,6 +30,7 @@ public class OrderManagerV2 {
                 System.out.println("4. View delivered order"); // view invoice
                 System.out.println("5. View canceled order");
                 System.out.println("6. Change order status"); // okay
+                System.out.println("7. View feedback"); // okay
                 System.out.println("0. Back");
                 System.out.println("Enter choice: ");
                 byte choice = InputMethods.getByte();
@@ -52,6 +53,9 @@ public class OrderManagerV2 {
                     case 6:
                         changeOrderStatus();
                         break;
+                    case 7:
+
+                        break;
                     case 0:
                         break;
                     default:
@@ -71,6 +75,7 @@ public class OrderManagerV2 {
                 System.out.println("4. View delivered order"); // view invoice
                 System.out.println("5. View canceled order");
                 System.out.println("6. Cancel order"); // okay
+                System.out.println("7. Give a feedback");
                 System.out.println("0. Back");
                 System.out.println("Enter choice: ");
                 byte choice = InputMethods.getByte();
@@ -86,13 +91,15 @@ public class OrderManagerV2 {
                         break;
                     case 4:
                         viewInvoice();
-
                         break;
                     case 5:
                         viewOrderByCode((byte) 3);
                         break;
                     case 6:
                         cancelOrder();
+                        break;
+                    case 7:
+                        giveAFeedback();
                         break;
                     case 0:
                         break;
@@ -157,7 +164,7 @@ public class OrderManagerV2 {
             }
         }
         else {
-            for (Order order : orderList) {
+            for (Order order : filter) {
                 System.out.println(order);
             }
         }
@@ -179,21 +186,7 @@ public class OrderManagerV2 {
             System.out.println("Empty");
             return;
         }
-//        for (Order order : filter) {
-//            System.out.println("\n");
-//            System.out.printf("----------Invoice----------\n");
-//            System.out.printf("          Id:%5d                   \n", order.getId());
-//            System.out.printf("          Date:                  \n", order.getBuyDate());
-//            System.out.println("          Infomation                   ");
-//            System.out.printf("Receiver: " + order.getReceiver() + " | Phone: " + order.getPhoneNumber() + "\n");
-//            System.out.println("Address " + order.getAddress());
-//            System.out.println("----------Detail----------");
-//            for (CartItem item : order.getOrderDetail()) {
-//                System.out.println(item);
-//            }
-//            System.out.println("Total: " + Validation.formatPrice(order.getTotal()));
-//            System.out.println("--------Thank you---------");
-//        }
+
         if(Main.currentLogin.getRoles().contains(RoleName.ADMIN)){
             for (Order order : filter) {
                 UserController userController = new UserController();
@@ -205,7 +198,7 @@ public class OrderManagerV2 {
                 System.out.println("\n");
                 System.out.printf("----------Invoice----------\n");
                 System.out.printf("          Id:%5d                   \n", order.getId());
-                System.out.printf("          Date:                  \n", order.getBuyDate());
+                System.out.printf("          Date:%15s                  \n", order.getBuyDate());
                 System.out.println("          Infomation                   ");
                 System.out.printf("Receiver: " + order.getReceiver() + " | Phone: " + order.getPhoneNumber() + "\n");
                 System.out.println("Address " + order.getAddress());
@@ -257,7 +250,7 @@ public class OrderManagerV2 {
     public void changeOrderStatus(){
         System.out.println("Enter order ID: ");
         int changeOrderStatusId = InputMethods.getInteger();
-        Order changeOrderStatus = orderController.findById(changeOrderStatusId);
+        Order changeOrderStatus = orderController.findByIdForAdmin(changeOrderStatusId);
         if (changeOrderStatus == null) {
             System.err.println(Alert.NOT_FOUND);
             return;
@@ -298,6 +291,33 @@ public class OrderManagerV2 {
     }
 
 
+    public void giveAFeedback(){
+        List<Order> orderList;
+        if(Main.currentLogin.getRoles().contains(RoleName.ADMIN)){
+            orderList = orderController.getAll();
+        } else {
+            orderList = orderController.findOrderByUserId();
+        }
+        List<Order> filter = new ArrayList<>();
+        for (Order order : orderList) {
+            if (order.getStatus() == 2) {
+                filter.add(order);
+            }
+        }
+        if (filter.isEmpty()) {
+            System.out.println("Empty");
+            return;
+        }
+
+        System.out.println("Enter order ID: ");
+        int feedbackOrderId = InputMethods.getInteger();
+        Order feedbackOrder =  find(feedbackOrderId,filter);
+        if (feedbackOrder == null) {
+            System.err.println(Alert.NOT_FOUND);
+            return;
+        }
+        System.out.println("Enter feedback: ");
+    }
     private static void displayOrderForAdmin(Order order, User orderUser) {
         System.out.println("---------------------------------------"+"\n"+
                 "ID: " + order.getId() + " | Date: " + order.getBuyDate() + "\n" +
@@ -308,6 +328,14 @@ public class OrderManagerV2 {
                 "Receiver: " + order.getReceiver() + "\n"+
                 "Phone number: " + order.getPhoneNumber() + "\n"+
                 "Address: " + order.getAddress());
+    }
+    public Order find(int id,List<Order> orderList) {
+        for (Order order : orderList) {
+            if (order.getId() == id) {
+                return order;
+            }
+        }
+        return null;
     }
 }
 

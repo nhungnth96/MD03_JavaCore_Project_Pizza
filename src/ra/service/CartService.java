@@ -30,7 +30,15 @@ public class CartService implements IGenericService<CartItem, Integer> {
 
             // đã có trong cart
             if(itemFood!=null){
-                itemFood.setItemQuantity((itemFood.getItemQuantity())+item.getItemQuantity());
+                if(itemFood.getItemFood().getFoodCategory().getCategoryName().equals("Pizza")){
+                    if(itemFood.getPizzaCrust().equals(item.getPizzaCrust())&&
+                            itemFood.getPizzaSize().equals(item.getPizzaSize()) &&
+                    itemFood.getPizzaExtrasCheese().equals(item.getPizzaExtrasCheese())){
+                        itemFood.setItemQuantity((itemFood.getItemQuantity())+item.getItemQuantity());
+                    }
+                } else {
+                    itemFood.setItemQuantity((itemFood.getItemQuantity()) + item.getItemQuantity());
+                }
             }
 
             // chưa có trong cart
