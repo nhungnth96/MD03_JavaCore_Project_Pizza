@@ -1,7 +1,7 @@
 package ra.model.order;
 
 public enum ShippingMethod {
-    DELIVERY(5),
+    DELIVERY(50),
     TAKE_AWAY(0);
     private double price;
 

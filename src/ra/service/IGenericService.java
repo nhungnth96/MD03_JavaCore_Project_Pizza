@@ -1,5 +1,7 @@
 package ra.service;
 
+import ra.model.feedback.Feedback;
+
 import java.util.List;
 
 public interface IGenericService<T,E> {
@@ -8,4 +10,5 @@ public interface IGenericService<T,E> {
     void delete(E e);
     T findById(E e);
     int getNewId();
+
 }

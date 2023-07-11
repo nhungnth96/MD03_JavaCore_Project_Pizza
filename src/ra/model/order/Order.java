@@ -3,6 +3,7 @@ package ra.model.order;
 import ra.config.Message;
 import ra.config.Validation;
 import ra.model.cart.CartItem;
+import ra.model.feedback.Feedback;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,9 +19,13 @@ public class Order implements Serializable {
     private String receiver;
     private String phoneNumber;
     private String address;
-    private byte status = 1;
+    private byte status = 2;
     private List<CartItem> orderDetail = new ArrayList<>();
-
+    private PaymentMethod paymentMethod;
+    private ShippingMethod shippingMethod;
+    public static final long DELIVERY_TIME = 30000;
+    public static final long PREPARE_TIME = 20000;
+    private List<Feedback> feedbackList = new ArrayList<>();
     public Order() {
     }
 
@@ -108,10 +113,34 @@ public class Order implements Serializable {
         this.orderDetail = orderDetail;
     }
 
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(ShippingMethod shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public List<Feedback> getFeedbackList() {
+        return feedbackList;
+    }
+
+    public void setFeedbackList(List<Feedback> feedbackList) {
+        this.feedbackList = feedbackList;
+    }
+
     @Override
     public String toString() {
         return "---------------------------------------"+"\n"+
-                "ID: " + id + " | Date: " + buyDate + "\n" +
+                "Order ID: " + id + " | Date: " + buyDate + "\n" +
                 "Detail: "  +
                 orderDetail.toString().replace(", ","\n").replace("[","\n").replace("]","\n").replace("ID: ","") +
         "Total: " + Validation.formatPrice(total) + " | Status: " + Message.getStatusByCode(status) + "\n" +

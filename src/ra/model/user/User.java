@@ -3,6 +3,7 @@ package ra.model.user;
 import ra.model.cart.CartItem;
 import ra.model.favor.FavorItem;
 import ra.model.order.Order;
+import ra.model.wallet.Wallet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,16 +13,17 @@ import java.util.Set;
 
 public class User implements Serializable {
     private int id;
-    private String name = "";
-    private String username = "";
-    private String password = "";
-    private String email = "";
-    private String address = "";
-    private String tel = "";
+    private String name ="";
+    private String username="";
+    private String password="";
+    private String email="";
+    private String address="";
+    private String tel="";
     private boolean status = true;
     private Set<RoleName> roles = new HashSet<>();
     private List<CartItem> cart = new ArrayList<>();
     private List<FavorItem> favor = new ArrayList<>();
+    private double wallet = 0;
     public User() {
     }
 
@@ -133,10 +135,24 @@ public class User implements Serializable {
         this.favor = favor;
     }
 
-    @Override
-    public String toString() {
-        return "ID: " + id + " | Name: " + name + " | Username: " + username + " | Role: " + roles + " | Status: " + (status ? "🔓" : "🔒");
+    public double getWallet() {
+        return wallet;
     }
 
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
+    }
+
+    @Override
+    public String toString() {
+        return "User ID: " + id + " | Name: " + name + " | Username: " + username + " | Role: " + roles + " | Status: " + (status ? "🔓" : "🔒");
+    }
+//    public String toString(){
+//        String formattedString = String.format("| %-10d | %-15s | %-15s | %-15s | %-10s |%n",
+//               id , name, username, roles, status);
+//        String separator = "┌───────────────────────────────────────────────────────────────────┐\n";
+//        String header = "| User ID  | Name         | Username      |         Role  |  Status |\n";
+//        return separator + header + separator + formattedString + separator;
+//    }
 
 }

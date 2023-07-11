@@ -1,11 +1,14 @@
 package ra.service;
 
 import ra.config.Alert;
+import ra.database.DataBase;
+import ra.manager.Main;
 import ra.model.user.RoleName;
 import ra.model.user.User;
-import ra.database.DataBase;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class UserService implements IGenericService<User, Integer> {
     private List<User> users;
@@ -15,9 +18,9 @@ public class UserService implements IGenericService<User, Integer> {
         if (userList == null) {
             userList = new ArrayList<>();
         }
-            this.users = userList;
+        this.users = userList;
 
-        }
+    }
 
     @Override
     public List<User> getAll() {
@@ -55,6 +58,7 @@ public class UserService implements IGenericService<User, Integer> {
         }
         return null;
     }
+
     public int getNewId() {
         int maxId = 0;
         for (User user : users) {
@@ -68,33 +72,43 @@ public class UserService implements IGenericService<User, Integer> {
     public void changeStatus(Integer userId) {
         User changeStatusUser = findById(userId);
         if (changeStatusUser == null) {
-            System.out.println(Alert.NOT_FOUND);
+            System.err.println(Alert.NOT_FOUND);
             return; // dừng hàm
+        } if(Main.currentLogin.equals(changeStatusUser)){
+            System.err.println("You can't change status yourself");
+            return;
+        }
+        if (changeStatusUser.getRoles().contains(RoleName.ADMIN)){
+            System.err.println("You can't change status of admin");
+            return;
         }
         changeStatusUser.setStatus(!changeStatusUser.isStatus());
         save(changeStatusUser);
+        System.out.println(Alert.SUCCESS);
     }
+
     public void changeRole(Integer userId) {
         User changeRoleUser = findById(userId);
         if (changeRoleUser == null) {
-            System.out.println(Alert.NOT_FOUND);
+            System.err.println(Alert.NOT_FOUND);
             return; // dừng hàm
         }
         Set<RoleName> currentRoles = changeRoleUser.getRoles();
-
-            if(currentRoles.contains(RoleName.USER)&&currentRoles.size()==1){
-                currentRoles.add(RoleName.MANAGER);
-            } else {
-                System.err.println("This role has been set, choose another role");
-                return;
-            }
-
+        if (currentRoles.contains(RoleName.USER) && currentRoles.size() == 1) {
+            currentRoles.add(RoleName.ADMIN);
+        } else if (Main.currentLogin.equals(changeRoleUser)) {
+            System.err.println("You can't change role yourself");
+            return;
+        } else {
+            currentRoles.remove(RoleName.ADMIN);
+        }
         changeRoleUser.setRoles(currentRoles);
         save(changeRoleUser);
+        System.out.println(Alert.SUCCESS);
     }
 
     public User checkExistedAccount(String username, String password) {
-        if(username.equals("admin")&&password.equals("Admin@123")){
+        if (username.equals("admin") && password.equals("Admin@123")) {
             return DataBase.admin;
 
         }
@@ -105,15 +119,17 @@ public class UserService implements IGenericService<User, Integer> {
         }
         return null;
     }
-    public boolean checkExistedUsername(String username){
+
+    public boolean checkExistedUsername(String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
-               return true;
+                return true;
             }
         }
         return false;
     }
-    public boolean checkExistedPassword(String password){
+
+    public boolean checkExistedPassword(String password) {
         for (User user : users) {
             if (user.getPassword().equals(password)) {
                 return true;
@@ -122,7 +138,7 @@ public class UserService implements IGenericService<User, Integer> {
         return false;
     }
 
-    public boolean checkExistedEmail(String email){
+    public boolean checkExistedEmail(String email) {
         for (User user : users) {
             if (user.getEmail().equals(email)) {
                 return true;
@@ -130,7 +146,8 @@ public class UserService implements IGenericService<User, Integer> {
         }
         return false;
     }
-    public boolean checkExistedPhoneNumber(String tel){
+
+    public boolean checkExistedPhoneNumber(String tel) {
         for (User user : users) {
             if (user.getTel().equals(tel)) {
                 return true;

@@ -33,7 +33,7 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return
-                "ID: " + categoryId +
+                "Category ID: " + categoryId +
                 " | Name: " + categoryName;
 
     }

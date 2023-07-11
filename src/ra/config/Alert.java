@@ -14,6 +14,7 @@ public class Alert {
     public static final String ERROR_SPACE = "The input contains white spaces";
     public static final String SOLD_OUT = "Out of stock";
     public static final String NOT_ENOUGH = "Not enough in stock";
-    public static final String EMPTY_LIST = "Empty list";
+    public static final String EMPTY_LIST = "\u001B[33mEmpty list\u001B[0m";
+
 
 }

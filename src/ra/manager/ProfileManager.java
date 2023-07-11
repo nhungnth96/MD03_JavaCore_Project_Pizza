@@ -17,7 +17,7 @@ public class ProfileManager {
             System.out.println("1. View Profile");
             System.out.println("2. Edit Profile");
             System.out.println("3. Change Password");
-            System.out.println("3. Total spending"); // new feature
+            System.out.println("4. My Wallet");
             System.out.println("0. Back");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
@@ -30,6 +30,9 @@ public class ProfileManager {
                     break;
                 case 3:
                     changePassword();
+                    break;
+                case 4:
+                    loadMoney();
                     break;
                 case 0:
                     break;
@@ -63,10 +66,11 @@ public class ProfileManager {
             if (Validation.validateTel(tel)) {
                 break;
             }
-            System.out.println(Alert.ERROR_TEL);
+            System.err.println(Alert.ERROR_TEL);
         }
         currentUser.setTel(tel);
         userController.save(currentUser);
+        System.out.println(Alert.SUCCESS);
     }
 
     public void changePassword() {
@@ -74,6 +78,10 @@ public class ProfileManager {
         String oldPass;
         while (true) {
             oldPass = InputMethods.getString();
+            if(!Validation.validateSpaces(oldPass)){
+                System.err.println(Alert.ERROR_SPACE);
+                continue;
+            }
             if (!Validation.validatePassword(oldPass)) {
                 System.err.println(Alert.ERROR_PASSWORD);
                 continue;
@@ -99,5 +107,30 @@ public class ProfileManager {
         currentUser.setPassword(newPass);
         userController.save(currentUser);
         System.out.println(Alert.SUCCESS);
+    }
+    public void loadMoney(){
+        System.out.println("Current: " + Validation.formatPrice(currentUser.getWallet()));
+        System.out.println("Do you want to load more money?");
+        System.out.println("1.Yes");
+        System.out.println("2.No");
+        while(true){
+            byte choice = InputMethods.getByte();
+            switch (choice){
+                case 1:
+                    System.out.println("Enter number of money want to load: ");
+                    double money = InputMethods.getDouble();
+                    double currentTotal = currentUser.getWallet() ;
+                    currentUser.setWallet(currentTotal+money);
+                    System.out.println(Alert.SUCCESS);
+                    break;
+                case 2:
+                    break;
+                default:
+                    System.err.println(InputMethods.ERROR_ALERT);
+            } if (choice>=1 && choice <= 2){
+                break;
+            }
+        }
+
     }
 }

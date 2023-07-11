@@ -85,11 +85,11 @@ public class CartItem implements Serializable {
     @Override
     public String toString() {
         if(itemFood.getFoodCategory().getCategoryName().equals("Pizza")){
-            return "ID: " + itemId + " | " +itemFood.getFoodCategory().getCategoryName() +": "+ itemFood.getFoodName() + "\n"+
+            return "Item ID: " + itemId + " | " +itemFood.getFoodCategory().getCategoryName() +": "+ itemFood.getFoodName() + "\n"+
                     "Crust: "+ pizzaCrust + " | Size: " +pizzaSize + " | Extras: "+pizzaExtrasCheese+ "\n"+
                     "Price: " + Validation.formatPrice(pizzaPrice) + " | Quantity: " + itemQuantity;
         } else {
-            return "ID: " + itemId+ " | " + itemFood.getFoodCategory().getCategoryName()+": " + itemFood.getFoodName() + "\n"+
+            return "Item ID: " + itemId+ " | " + itemFood.getFoodCategory().getCategoryName()+": " + itemFood.getFoodName() + "\n"+
                     "Price: " + Validation.formatPrice(itemFood.getFoodPrice()) + " | Quantity: " + itemQuantity;
         }
     }

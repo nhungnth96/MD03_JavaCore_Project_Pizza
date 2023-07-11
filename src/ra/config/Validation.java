@@ -1,5 +1,6 @@
 package ra.config;
 
+import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
 public class Validation {
@@ -32,11 +33,15 @@ public class Validation {
     }
 
     public static String formatPrice(Double price) {
-        if (price % 1 == 0) {
+        if (price % 1 == 0 && price < 1000) {
             return String.format(String.valueOf(price)).replaceAll("\\.0+$", "") + ".000₫";
+        } else if (price > 1000) {
+            double formattedNumber = price / 1000;
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            String formattedString = decimalFormat.format(formattedNumber);
+            return String.format(String.valueOf(formattedString)).replaceAll("\\.0+$", "") + ".000₫";
         }
         return price + "00₫";
     }
-
 
 }

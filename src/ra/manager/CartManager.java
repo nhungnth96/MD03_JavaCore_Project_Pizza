@@ -2,6 +2,7 @@ package ra.manager;
 
 import ra.config.Alert;
 import ra.config.InputMethods;
+import ra.config.Validation;
 import ra.controller.CartController;
 import ra.controller.FoodController;
 import ra.controller.OrderController;
@@ -12,6 +13,8 @@ import ra.model.food.PizzaExtrasCheese;
 import ra.model.food.PizzaSize;
 import ra.model.order.Order;
 import ra.model.food.Food;
+import ra.model.order.PaymentMethod;
+import ra.model.order.ShippingMethod;
 import ra.model.user.User;
 
 import java.util.List;
@@ -65,7 +68,7 @@ public class CartManager {
         User currentLogin = Main.currentLogin;
         List<CartItem> itemList = currentLogin.getCart();
         if(itemList.isEmpty()){
-            System.out.println("\u001B[33mEmpty item list\u001B[0m");
+            System.out.println(Alert.EMPTY_LIST);
             return;
         }
         for (CartItem item:itemList){
@@ -183,16 +186,17 @@ public class CartManager {
         cartController = new CartController(Main.currentLogin);
         this.foodController = foodController;
         User currentLogin = Main.currentLogin;
+
         List<CartItem> itemList = currentLogin.getCart();
         if(itemList.isEmpty()){
-            System.out.println("\u001B[33mEmpty item list\u001B[0m");
+            System.out.println(Alert.EMPTY_LIST);
             return;
         }
         // kiểm tra số lượng trong kho
         for(CartItem item: itemList){
             Food food = foodController.findById(item.getItemFood().getFoodId());
             if(item.getItemQuantity()> food.getFoodStock()){
-                System.out.println("The "+ food.getFoodName()+" is only have "+ food.getFoodStock()+" in stock, please reduce");
+                System.err.println("The "+ food.getFoodName()+" is only have "+ food.getFoodStock()+" in stock, please reduce");
                 return;
             }
         }
@@ -212,13 +216,95 @@ public class CartManager {
         }
         newOrder.setTotal(total);
         newOrder.setUserId(currentLogin.getId());
-        System.out.println("Enter receiver name: ");
-        newOrder.setReceiver(InputMethods.getString());
-        System.out.println("Enter phone number: ");
-        newOrder.setPhoneNumber(InputMethods.getString());
-        System.out.println("Enter address: ");
-        newOrder.setAddress(InputMethods.getString());
+        System.out.println("Choose payment method: ");
+        for (int i = 0; i < PaymentMethod.values().length; i++) {
+            System.out.println((i + 1) + ". " + PaymentMethod.values()[i]);
+            // 1. Cash
+            // 2. Wallet
+        }
+        while(true){
+            int payChoice = InputMethods.getInteger();
+            if (payChoice >= 1 && payChoice <= PaymentMethod.values().length) {
+                if(payChoice==2){
+                    if(currentLogin.getWallet()< newOrder.getTotal()){
+                        System.err.println("Your wallet is not enough money to pay, load more money or choose another method ");
+                        return;
+                    }
+                    currentLogin.setWallet(currentLogin.getWallet()- newOrder.getTotal());
+                }
+                newOrder.setPaymentMethod(PaymentMethod.values()[payChoice-1]);
+                break;
+            }
+            System.err.println(InputMethods.ERROR_ALERT);
+        }
+        System.out.println("Choose shipping method: ");
+        for (int i = 0; i < ShippingMethod.values().length; i++) {
+            System.out.println((i + 1) + ". " + ShippingMethod.values()[i]);
+            // 1. Delivery
+            // 2. Takeaway
+        }
+        while(true){
+            int shipChoice = InputMethods.getInteger();
+            if (shipChoice >= 1 && shipChoice <= PaymentMethod.values().length){
+                newOrder.setShippingMethod(ShippingMethod.values()[shipChoice-1]);
+                if(shipChoice==1){
+                    newOrder.setTotal(total+newOrder.getShippingMethod().getPrice());
+                    if(newOrder.getPaymentMethod().equals(PaymentMethod.WALLET)){
+                        if(currentLogin.getWallet()< newOrder.getTotal()){
+                            System.err.println("Your wallet is not enough money to pay, load more money or choose another method ");
+                            return;
+                        }
+                    }
+                    currentLogin.setWallet(currentLogin.getWallet()- newOrder.getTotal());
+                    System.out.println("Enter receiver name: ");
+                    newOrder.setReceiver(InputMethods.getString());
+                    System.out.println("Enter phone number: ");
+                    String tel;
+                    while (true) {
+                        tel = InputMethods.getString();
+                        if (Validation.validateTel(tel)) {
+                            newOrder.setPhoneNumber(tel);
+                            break;
+                        }
+                        System.err.println(Alert.ERROR_TEL);
+                    }
+                    System.out.println("Enter address: ");
+                    newOrder.setAddress(InputMethods.getString());
+                    break;
+                }
+                    if (currentLogin.getName().equals("")){
+                        System.out.println("Enter receiver: ");
+                        newOrder.setReceiver(InputMethods.getString());
+                        break;
+                    }
+                    newOrder.setReceiver(currentLogin.getName());
+                    if (currentLogin.getTel().equals("")){
+                        System.out.println("Enter phone number: ");
+                        String tel;
+                        while (true) {
+                            tel = InputMethods.getString();
+                            if (Validation.validateTel(tel)) {
+                                break;
+                            }
+                            System.err.println(Alert.ERROR_TEL);
+                        }
+                        newOrder.setPhoneNumber(tel);
+                        break;
+                    }
+                    newOrder.setPhoneNumber(currentLogin.getTel());
+                    if (currentLogin.getAddress().equals("")){
+                        System.out.println("Enter address: ");
+                        newOrder.setAddress(InputMethods.getString());
+                        break;
+                    }
+                    newOrder.setAddress(currentLogin.getAddress());
+                    break;
+                }
+            System.err.println(InputMethods.ERROR_ALERT);
+            }
+
         orderController.save(newOrder);
+        System.out.println("\u001B[43mThank you!!!\u001B[0m");
         // giảm số lượng trong stock
         for(CartItem item: itemList){
             FoodController foodController1 = new FoodController();

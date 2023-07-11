@@ -50,15 +50,6 @@ public class OrderService {
         }
         return maxId + 1;
     }
-
-    public Order findById(int id) {
-        for (Order order : findOrderByUserId()) {
-            if (order.getId() == id) {
-                return order;
-            }
-        }
-        return null;
-    }
     public Order findByIdForAdmin(int id) {
         for (Order order : orders) {
             if (order.getId() == id) {
@@ -67,7 +58,14 @@ public class OrderService {
         }
         return null;
     }
-
+    public Order findById(int id) {
+        for (Order order : findOrderByUserId()) {
+            if (order.getId() == id) {
+                return order;
+            }
+        }
+        return null;
+    }
     public List<Order> findOrderByUserId() {
         List<Order> findList = new ArrayList<>();
         for (Order order : orders) {

@@ -13,6 +13,7 @@ public class DataBase {
     public static final String CATEGORY_PATH = "src\\ra\\database\\category.txt";
     public static final String FOOD_PATH = "src\\ra\\database\\food.txt";
     public static final String ORDER_PATH = "src\\ra\\database\\order.txt";
+    public static final String FEEDBACK_PATH = "src\\ra\\database\\feedback.txt";
     public static final User admin = new User(0,"admin", "admin", "Admin@123", new HashSet<>(Arrays.asList(RoleName.ADMIN, RoleName.USER)));
     public static void writeToFile(Object o, String path) {
         try {

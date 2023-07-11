@@ -15,14 +15,15 @@ public class UserManager {
     public UserManager(UserController userController) {
         this.userController = userController;
         while (true) {
-            System.out.println("====USER MANAGER====");
-            System.out.println("1. Show all account");
-            System.out.println("2. Block / Unblock account");
-            System.out.println("3. Search account");
-            System.out.println("4. Change account's role ");
-            System.out.println("5. Create account");
-            System.out.println("0. Back");
-            System.out.println("Enter choice: ");
+            System.out.println("╔══════════USER MANAGER═════════╗");
+            System.out.println("║       1. Show all account     ║");
+            System.out.println("║       2. Change status        ║");
+            System.out.println("║       3. Search account       ║");
+            System.out.println("║       4. Change role          ║");
+            System.out.println("║       5. Create account       ║");
+            System.out.println("║       0. Back                 ║");
+            System.out.println("╚═══════════════════════════════╝");
+            System.out.print("        Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
@@ -54,13 +55,17 @@ public class UserManager {
 
     public void showAllAccount() {
         if (userController.getAll().isEmpty()) {
-            System.out.println("\u001B[33mEmpty user list\u001B[0m");
+            System.out.println(Alert.EMPTY_LIST);
             return;
         }
         for (User user : userController.getAll()) {
-            System.out.println("------------------");
             System.out.println(user);
         }
+    }
+    public void changeStatus() {
+        System.out.println("Enter user ID: ");
+        int userId = InputMethods.getInteger();
+        userController.changeStatus(userId);
     }
     public void searchAccount(){
         System.out.println("Enter keyword: ");
@@ -79,21 +84,11 @@ public class UserManager {
             }
         }
     }
-
-    public void changeStatus() {
-        System.out.println("Enter account ID: ");
-        int accountId = InputMethods.getInteger();
-        userController.changeStatus(accountId);
-        System.out.println(Alert.SUCCESS);
-    }
-
     public void changeRole() {
-        System.out.println("Enter account ID: ");
-        int accountId = InputMethods.getInteger();
-        userController.changeRole(accountId);
-        System.out.println(Alert.SUCCESS);
+        System.out.println("Enter user ID: ");
+        int userId = InputMethods.getInteger();
+        userController.changeRole(userId);
     }
-
     public void createAccount() {
         User user = new User();
         user.setId(userController.getNewId());
@@ -150,23 +145,21 @@ public class UserManager {
             }
             System.err.println(Alert.ERROR_EMAIL);
         }
-        System.out.println("Enter Roles: (etc: user,admin,...)");
-        String roles = InputMethods.getString();
-        String[] stringRoles = roles.split(",");
-        List<String> listRoles = Arrays.asList(stringRoles);;
-        for (String role : stringRoles) {
-            switch (role) {
-                case "admin":
-                    user.getRoles().add(RoleName.ADMIN);
-                case "manager":
-                    user.getRoles().add(RoleName.MANAGER);
-                case "user":
-                    user.getRoles().add(RoleName.USER);
-                default:
-                    user.getRoles().add(RoleName.USER);
-            }
-        }
-
+//        System.out.println("Enter Roles: (etc: user,admin,...)");
+//        String roles = InputMethods.getString().toLowerCase();
+//        String[] stringRoles = roles.split(",");
+//        List<String> listRoles = Arrays.asList(stringRoles);;
+//        for (String role : stringRoles) {
+//            switch (role) {
+//                case "admin":
+//                    user.getRoles().add(RoleName.ADMIN);
+//                case "user":
+//                    user.getRoles().add(RoleName.USER);
+//                default:
+//                    user.getRoles().add(RoleName.USER);
+//            }
+//        }
+        user.setRoles(new HashSet<>(Arrays.asList(RoleName.USER)));
         userController.save(user);
         System.out.println(Alert.SUCCESS);
 

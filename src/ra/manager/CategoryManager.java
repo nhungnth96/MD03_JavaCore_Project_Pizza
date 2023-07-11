@@ -55,7 +55,7 @@ public class CategoryManager {
 
     public void viewCategory() {
         if (categoryList.size() == 0) {
-            System.out.println("\u001B[33mEmpty category list\u001B[0m");
+            System.out.println(Alert.EMPTY_LIST);
         }
         for (Category category : categoryList) {
             System.out.println(category);

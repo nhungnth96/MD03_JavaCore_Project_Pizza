@@ -74,7 +74,7 @@ public class FoodManager {
         FoodController foodController = new FoodController();
         List<Food> foodList = foodController.getAll();
         if (foodList.size() == 0) {
-            System.err.println("\u001B[33mEmpty product list\u001B[0m");
+            System.err.println(Alert.EMPTY_LIST);
             return;
         }
         while (true) {
@@ -89,7 +89,7 @@ public class FoodManager {
                     viewAllFood(foodList);
                     break;
                 case 2:
-                    ViewFoodByCategory(foodList);
+                    viewFoodByCategory(foodList);
                     break;
                 case 0:
                     break;
@@ -115,7 +115,7 @@ public class FoodManager {
             }
         }
     }
-    private static void ViewFoodByCategory(List<Food> foodList) {
+    private static void viewFoodByCategory(List<Food> foodList) {
         CategoryController categoryController = new CategoryController();
         List<Category> categories = categoryController.getAll();
         for (int i = 0; i < categories.size(); i++) {

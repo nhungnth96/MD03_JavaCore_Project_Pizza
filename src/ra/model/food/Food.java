@@ -90,7 +90,7 @@ public class Food implements Serializable  {
     public String toString() {
         return
                 "---------------------------" + "\n"+
-                        "ID: " + foodId +  "\n"+
+                        "Food ID: " + foodId +  "\n"+
                         "Name: " + foodName + "\n"+
                         "Ingredient: " + foodIngredient + "\n"+
                         "Price: " + Validation.formatPrice(foodPrice);
@@ -100,8 +100,8 @@ public class Food implements Serializable  {
 
     public String displayForAdmin() {
         return  "---------------------------"+ "\n" +
-                "ID: " + foodId + " | Category: " + foodCategory.getCategoryName() +  " | Status: " + (foodStatus ? "On stock" : "Out of stock") + "\n" +
-                        "Name: " + foodName +  " | Des: " + foodIngredient + "\n" +
+                "Food ID: " + foodId + " | Category: " + foodCategory.getCategoryName() +  " | Status: " + (foodStatus ? "On stock" : "Out of stock") + "\n" +
+                        "Name: " + foodName +  " | Ingredient: " + foodIngredient + "\n" +
 
                 "Price: " +  Validation.formatPrice(foodPrice) +
                         " | Stock: " + foodStock
@@ -122,7 +122,7 @@ public class Food implements Serializable  {
         for (Category category : categories) {
             System.out.println(category);
         }
-        System.out.println("Enter food category ID : ");
+        System.out.println("Enter category ID : ");
         while (true) {
             int categoryId = InputMethods.getInteger();
             boolean flag = true;
@@ -134,7 +134,7 @@ public class Food implements Serializable  {
                 }
             }
             if (flag) {
-                System.out.println(Alert.NOT_FOUND);
+                System.err.println(Alert.NOT_FOUND);
             } else {
                 break;
             }

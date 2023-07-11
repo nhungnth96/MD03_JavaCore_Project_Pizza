@@ -27,13 +27,15 @@ public class Main {
     public static void homePage() {
         boolean loop = true;
         while (loop) {
-            System.out.println("======WELCOME TO DOMINO PIZZA=====");
-            System.out.println("1. Login");
-            System.out.println("2. Register");
-            System.out.println("3. Continue without login");
-            System.out.println("0. Exit");
-            System.out.println("Enter choice: ");
+            System.out.println("╔════WELCOME TO DOMINO PIZZA════╗");
+            System.out.println("║           1. Login            ║");
+            System.out.println("║           2. Register         ║");
+            System.out.println("║           3. View menu        ║");
+            System.out.println("║           0. Exit             ║");
+            System.out.println("╚═══════════════════════════════╝");
+            System.out.print("       Enter choice: ");
             byte choice = InputMethods.getByte();
+            System.out.print("\n");
             switch (choice) {
                 case 1:
                     login();
@@ -57,8 +59,9 @@ public class Main {
 
     // ===============================SIGN IN=============================== DONE
     public static void login() {
-        System.out.println("======LOG IN=====");
-        System.out.println("Enter username: ");
+        System.out.println("════════════LOG IN════════════");
+        System.out.print("   username: ");
+
         String username;
         while (true) {
             username = InputMethods.getString();
@@ -71,10 +74,12 @@ public class Main {
             }
             System.err.println(Alert.ERROR_USERNAME);
         }
-        System.out.println("Enter password: ");
+
+        System.out.print("   password: ");
         String password;
         while (true) {
             password = InputMethods.getString();
+
             if(!Validation.validateSpaces(password)){
                 System.err.println(Alert.ERROR_SPACE);
                 continue;
@@ -87,11 +92,11 @@ public class Main {
         }
         User userLogin = userController.checkExistedAccount(username, password);
         if (userLogin == null) {
-            System.err.println("The account doesn't existed");
+            System.err.println("The account doesn't existed!");
         } else {
             if (userLogin.getRoles().contains(RoleName.ADMIN)) {
                 currentLogin = userLogin;
-                System.out.println("Welcome "+currentLogin.getName().toUpperCase());
+                System.out.println("        Welcome "+currentLogin.getName().toUpperCase());
                 adminPage();
             } else {
                 if (userLogin.getRoles().contains(RoleName.USER) && userLogin.isStatus()) {
@@ -99,8 +104,9 @@ public class Main {
                     System.out.println("Welcome " + currentLogin.getName().toUpperCase());
                     userPage();
                 } else {
-                    System.err.println("Your account has been locked");
+                    System.err.println("Your account has been locked!");
                     homePage();
+
                 }
             }
         }
@@ -173,11 +179,16 @@ public class Main {
     // ===============================GUEST PAGE=============================== DONE
     public static void guestPage() {
         while (true) {
-            System.out.println("\u001B[33mYou must be login to buy product\u001B[0m");
-            System.out.println("1. View food menu");
-            System.out.println("2. Search food menu");
-            System.out.println("0. Back");
+            System.out.println("\u001B[33mYou must be login to buy food\u001B[0m");
+            System.out.println("╔════════════════════════════╗");
+            System.out.println("║     1. View food menu      ║");
+            System.out.println("║     2. Search food menu    ║");
+            System.out.println("║     0. Back                ║");
+            System.out.println("╚════════════════════════════╝");
+            System.out.print("       Enter choice: ");
             byte choice = InputMethods.getByte();
+            System.out.print("\n");
+
             switch (choice) {
                 case 1:
                     FoodManager.viewFoodMenu();
@@ -206,7 +217,6 @@ public class Main {
             System.out.println("5. My Favor"); // new feature
             System.out.println("6. My Order");
             System.out.println("7. My Profile");
-            System.out.println("8. My Wallet"); // new feature
             System.out.println("0. Log out");
             System.out.println("Enter choice: ");
             byte choice = InputMethods.getByte();
@@ -256,8 +266,10 @@ public class Main {
 //                    System.out.println("1. View Profile");
 //                    System.out.println("2. Edit Profile");
 //                    System.out.println("3. Change Password");
+//                    System.out.println("4. My Wallet");
 //                    System.out.println("4. Back");
                     break;
+
                 case 0:
                     logout();
                     break;
@@ -274,12 +286,14 @@ public class Main {
     // ===============================ADMIN PAGE=============================== order
     public static void adminPage() {
         while (true) {
-            System.out.println("1. User Manager"); // done
-            System.out.println("2. Category Manager"); // done
-            System.out.println("3. Food Manager"); // done
-            System.out.println("4. Order Manager"); // not yet
-            System.out.println("0. Log out");
-            System.out.println("Enter choice: ");
+            System.out.println("╔═══════════════════════════════╗");
+            System.out.println("║       1. User Manager         ║");
+            System.out.println("║       2. Category Manager     ║");
+            System.out.println("║       3. Food Manager         ║");
+            System.out.println("║       4. Order Manager        ║");
+            System.out.println("║       0. Log out              ║");
+            System.out.println("╚═══════════════════════════════╝");
+            System.out.print("        Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
