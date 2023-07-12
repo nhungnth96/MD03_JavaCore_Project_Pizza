@@ -37,7 +37,7 @@ public class ProfileManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -50,15 +50,13 @@ public class ProfileManager {
         System.out.println("Username: " + currentUser.getUsername());
         System.out.println("Password: " + currentUser.getPassword());
         System.out.println("Email: " + currentUser.getEmail());
-        System.out.println("Address: " + currentUser.getAddress());
         System.out.println("Tel: " + currentUser.getTel());
+        System.out.println("Address: " + currentUser.getAddress());
     }
 
     public void editProfile() {
         System.out.println("Enter name: ");
         currentUser.setName(InputMethods.getString());
-        System.out.println("Enter address: ");
-        currentUser.setAddress(InputMethods.getString());
         System.out.println("Enter tel: ");
         String tel;
         while (true) {
@@ -66,11 +64,13 @@ public class ProfileManager {
             if (Validation.validateTel(tel)) {
                 break;
             }
-            System.err.println(Alert.ERROR_TEL);
+            System.err.println(Alert.TEL_ERROR);
         }
         currentUser.setTel(tel);
+        System.out.println("Enter address: ");
+        currentUser.setAddress(InputMethods.getString());
         userController.save(currentUser);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void changePassword() {
@@ -79,11 +79,11 @@ public class ProfileManager {
         while (true) {
             oldPass = InputMethods.getString();
             if(!Validation.validateSpaces(oldPass)){
-                System.err.println(Alert.ERROR_SPACE);
+                System.err.println(Alert.SPACE_ERROR);
                 continue;
             }
             if (!Validation.validatePassword(oldPass)) {
-                System.err.println(Alert.ERROR_PASSWORD);
+                System.err.println(Alert.PASSWORD_ERROR);
                 continue;
             }
             if (userController.checkExistedPassword(oldPass)) {
@@ -102,11 +102,11 @@ public class ProfileManager {
             if (Validation.validatePassword(newPass)) {
                 break;
             }
-            System.err.println(Alert.ERROR_PASSWORD);
+            System.err.println(Alert.PASSWORD_ERROR);
         }
         currentUser.setPassword(newPass);
         userController.save(currentUser);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
     public void loadMoney(){
         System.out.println("Current: " + Validation.formatPrice(currentUser.getWallet()));
@@ -121,12 +121,12 @@ public class ProfileManager {
                     double money = InputMethods.getDouble();
                     double currentTotal = currentUser.getWallet() ;
                     currentUser.setWallet(currentTotal+money);
-                    System.out.println(Alert.SUCCESS);
+                    System.out.println(Alert.SUCCESSFUL);
                     break;
                 case 2:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             } if (choice>=1 && choice <= 2){
                 break;
             }

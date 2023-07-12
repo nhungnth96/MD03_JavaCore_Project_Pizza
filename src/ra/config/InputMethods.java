@@ -3,10 +3,10 @@ package ra.config;
 import java.util.Scanner;
 
 public final class InputMethods {
-    public static final String ERROR_ALERT = "Invalid format! Please try again....";
-    public static final String EMPTY_ALERT = "The input field cannot be blanked! Please try again....";
-    public static final String ERROR_NUMBER = "Please enter an integer greater than 0";
-    public static final String ERROR_STOCK = "Please enter a quantity of stock greater than 10";
+    public static final String FORMAT_ERROR = "Invalid format! Please try again....";
+    public static final String EMPTY_ERROR = "The input field cannot be blanked! Please try again....";
+    public static final String NUMBER_ERROR = "Please enter an integer greater than 0";
+    public static final String STOCK_ERROR = "Please enter a quantity of stock greater than 10";
     /*========================================Input Method Start========================================*/
 
     /**
@@ -16,7 +16,7 @@ public final class InputMethods {
         while (true) {
             String result = getInput();
             if (result.equals("")) {
-                System.err.println(EMPTY_ALERT);
+                System.err.println(EMPTY_ERROR);
                 continue;
             }
 
@@ -47,7 +47,7 @@ public final class InputMethods {
             try {
                 return Byte.parseByte(getString());
             } catch (NumberFormatException errException) {
-                System.err.println(ERROR_ALERT);
+                System.err.println(FORMAT_ERROR);
             }
         }
     }
@@ -60,7 +60,7 @@ public final class InputMethods {
             try {
                 return Short.parseShort(getString());
             } catch (NumberFormatException errException) {
-                System.err.println(ERROR_ALERT);
+                System.err.println(FORMAT_ERROR);
             }
         }
     }
@@ -73,7 +73,7 @@ public final class InputMethods {
             try {
                 return Integer.parseInt(getString());
             } catch (NumberFormatException errException) {
-                System.err.println(ERROR_ALERT);
+                System.err.println(FORMAT_ERROR);
             }
         }
     }
@@ -86,7 +86,7 @@ public final class InputMethods {
             try {
                 return Long.parseLong(getString());
             } catch (NumberFormatException errException) {
-                System.err.println(ERROR_ALERT);
+                System.err.println(FORMAT_ERROR);
             }
         }
     }
@@ -99,7 +99,7 @@ public final class InputMethods {
             try {
                 return Float.parseFloat(getString());
             } catch (NumberFormatException errException) {
-                System.err.println(ERROR_ALERT);
+                System.err.println(FORMAT_ERROR);
             }
         }
     }
@@ -112,7 +112,7 @@ public final class InputMethods {
             try {
                 return Double.parseDouble(getString());
             } catch (NumberFormatException errException) {
-                System.err.println(ERROR_ALERT);
+                System.err.println(FORMAT_ERROR);
             }
         }
     }
@@ -140,7 +140,7 @@ public final class InputMethods {
             if (result > 0) {
                 return result;
             } else {
-                System.out.println(ERROR_NUMBER);
+                System.out.println(NUMBER_ERROR);
             }
 
         }
@@ -152,7 +152,7 @@ public final class InputMethods {
             if (result >= 10) {
                 return result;
             } else {
-                System.out.println(ERROR_STOCK);
+                System.out.println(STOCK_ERROR);
             }
 
         }

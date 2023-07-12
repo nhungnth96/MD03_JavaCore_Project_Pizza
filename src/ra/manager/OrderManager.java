@@ -44,7 +44,7 @@ public class OrderManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;

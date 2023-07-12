@@ -61,7 +61,7 @@ public class FoodManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -94,7 +94,7 @@ public class FoodManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -139,7 +139,7 @@ public class FoodManager {
                 }
                 break;
             } else {
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
         }
     }
@@ -166,7 +166,7 @@ public class FoodManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
 
             if (choice >= 0 && choice <= 2) {
@@ -253,7 +253,7 @@ public class FoodManager {
                 case 6:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (!des.isEmpty()) {
 
@@ -288,7 +288,7 @@ public class FoodManager {
             System.out.println("Food ID: " + food.getFoodId());
             food.inputData(categoryList);
             foodController.save(food);
-            System.out.println(Alert.SUCCESS);
+            System.out.println(Alert.SUCCESSFUL);
         }
     }
 
@@ -303,7 +303,7 @@ public class FoodManager {
         System.out.println(editFood.displayForAdmin());;
         editFood.inputData(categoryList);
         foodController.save(editFood);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void deleteFood() {
@@ -315,7 +315,7 @@ public class FoodManager {
             return;
         }
         foodController.delete(deleteFoodId);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void changeFoodStatus() {
@@ -329,22 +329,29 @@ public class FoodManager {
         System.out.println(changeStatusFood);
         changeStatusFood.setFoodStatus(!changeStatusFood.isFoodStatus());
         foodController.save(changeStatusFood);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void fillFoodStock() {
-        System.out.println("Enter food ID: ");
-        int fillFoodStockId = InputMethods.getInteger();
-        Food fillFoodStock = foodController.findById(fillFoodStockId);
-        if (fillFoodStock == null) {
-            System.err.println(Alert.NOT_FOUND);
-            return;
+//        System.out.println("Enter food ID: ");
+//        int fillFoodStockId = InputMethods.getInteger();
+//        Food fillFoodStock = foodController.findById(fillFoodStockId);
+//        if (fillFoodStock == null) {
+//            System.err.println(Alert.NOT_FOUND);
+//            return;
+//        }
+//        System.out.println("Current stock: " + fillFoodStock.getFoodStock());
+//        System.out.println("Enter quantity want to fill: ");
+//        int fillFoodQuantity = InputMethods.getInteger();
+//        fillFoodStock.setFoodStock(fillFoodStock.getFoodStock() + fillFoodQuantity);
+//        foodController.save(fillFoodStock);
+//        System.out.println(Alert.SUCCESSFUL);
+        for(Food food:foodList){
+            if(food.getFoodStock()!=100){
+                food.setFoodStock(100);
+                foodController.save(food);
+            }
         }
-        System.out.println("Current stock: " + fillFoodStock.getFoodStock());
-        System.out.println("Enter quantity want to fill: ");
-        int fillFoodQuantity = InputMethods.getInteger();
-        fillFoodStock.setFoodStock(fillFoodStock.getFoodStock() + fillFoodQuantity);
-        foodController.save(fillFoodStock);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 }

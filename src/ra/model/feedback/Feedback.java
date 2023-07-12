@@ -1,13 +1,21 @@
 package ra.model.feedback;
 
+import ra.model.food.Food;
+
 import java.io.Serializable;
 
 public class Feedback implements Serializable {
     private int feedbackId;
     private String feedbackContent;
+
     private int userId;
     private int orderId;
     public Feedback() {
+    }
+
+    public Feedback(int feedbackId, String feedbackContent) {
+        this.feedbackId = feedbackId;
+        this.feedbackContent = feedbackContent;
     }
 
     public Feedback(int feedbackId, String feedbackContent, int userId, int orderId) {
@@ -52,8 +60,7 @@ public class Feedback implements Serializable {
     @Override
     public String toString() {
         return
-                "Feedback ID: " + feedbackId + "\n"+
-                "Feedback content: " + feedbackContent ;
+                feedbackContent ;
 
     }
 }

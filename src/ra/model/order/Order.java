@@ -143,7 +143,8 @@ public class Order implements Serializable {
                 "Order ID: " + id + " | Date: " + buyDate + "\n" +
                 "Detail: "  +
                 orderDetail.toString().replace(", ","\n").replace("[","\n").replace("]","\n").replace("ID: ","") +
-        "Total: " + Validation.formatPrice(total) + " | Status: " + Message.getStatusByCode(status) + "\n" +
+                "Total: " + Validation.formatPrice(total) + " | Payment method: "+ paymentMethod +"\n"+
+                "Shipping method: "+ shippingMethod +" | Status: " + Message.getStatusByCode(status) + "\n" +
                         "Receiver: " + receiver + "\n"+
                         "Phone number: " + phoneNumber + "\n"+
                         "Address: " + address

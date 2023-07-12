@@ -84,7 +84,7 @@ public class UserService implements IGenericService<User, Integer> {
         }
         changeStatusUser.setStatus(!changeStatusUser.isStatus());
         save(changeStatusUser);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void changeRole(Integer userId) {
@@ -104,7 +104,7 @@ public class UserService implements IGenericService<User, Integer> {
         }
         changeRoleUser.setRoles(currentRoles);
         save(changeRoleUser);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public User checkExistedAccount(String username, String password) {

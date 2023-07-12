@@ -1,19 +1,16 @@
 package ra.config;
-
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.regex.Pattern;
-
 public class Validation {
 
     public static boolean validateUserName(String username) {
-        String regex = "^[a-zA-Z0-9._-]{3,13}$";
+        String regex = "^[a-zA-Z0-9._#?!@$%^&*-]{5,15}$";
         return Pattern.matches(regex, username);
     }
 
     public static boolean validatePassword(String password) {
-//        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,16}$";
-//        String regex = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{6,13}$";
-        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{3,13}$";
+
+        String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,12}$";
         return Pattern.matches(regex, password);
     }
 
@@ -33,15 +30,7 @@ public class Validation {
     }
 
     public static String formatPrice(Double price) {
-        if (price % 1 == 0 && price < 1000) {
-            return String.format(String.valueOf(price)).replaceAll("\\.0+$", "") + ".000₫";
-        } else if (price > 1000) {
-            double formattedNumber = price / 1000;
-            DecimalFormat decimalFormat = new DecimalFormat("#.###");
-            String formattedString = decimalFormat.format(formattedNumber);
-            return String.format(String.valueOf(formattedString)).replaceAll("\\.0+$", "") + ".000₫";
-        }
-        return price + "00₫";
+        return NumberFormat.getInstance().format(price)+"₫";
     }
 
 }

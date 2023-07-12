@@ -11,10 +11,9 @@ import ra.model.cart.CartItem;
 import ra.model.feedback.Feedback;
 import ra.model.food.Food;
 import ra.model.order.Order;
-import ra.model.order.ShippingMethod;
+import ra.model.order.PaymentMethod;
 import ra.model.user.RoleName;
 import ra.model.user.User;
-import sun.rmi.server.UnicastServerRef;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class OrderManagerV2 {
                     case 0:
                         break;
                     default:
-                        System.err.println(InputMethods.ERROR_ALERT);
+                        System.err.println(InputMethods.FORMAT_ERROR);
                 }
                 if (choice == 0) {
                     break;
@@ -108,7 +107,7 @@ public class OrderManagerV2 {
                     case 0:
                         break;
                     default:
-                        System.err.println(InputMethods.ERROR_ALERT);
+                        System.err.println(InputMethods.FORMAT_ERROR);
                 }
                 if (choice == 0) {
                     break;
@@ -116,19 +115,34 @@ public class OrderManagerV2 {
             }
         }
     }
-    private static void displayOrderForAdmin(Order order, User orderUser) {
 
-        System.out.println("---------------------------------------" + "\n" +
-                "Order ID: " + order.getId() + " | Date: " + order.getBuyDate() + "\n" +
-                "Buyer: " + orderUser.getName() + " | Phone number: " + orderUser.getTel() + "\n" +
-                "Detail: " +
-                order.getOrderDetail().toString().replace(", ", "\n").replace("[", "\n").replace("]", "\n").replace("ID: ", "") +
-                "Total: " + Validation.formatPrice(order.getTotal()) + " | Status: " + Message.getStatusByCode(order.getStatus()) + "\n" +
-                "Receiver: " + order.getReceiver() + "\n" +
-                "Phone number: " + order.getPhoneNumber() + "\n" +
-                "Address: " + order.getAddress());
+    public void viewFeedback(){
+        List<Order> orderList = orderController.getAll();
+        List<Order> filter = new ArrayList<>();
+        for (Order order : orderList) {
+            if (order.getStatus() == 5&&!order.getFeedbackList().isEmpty()) {
+                filter.add(order);
+            }
+        }
+        if (filter.isEmpty()) {
+            System.out.println(Alert.NO_FEEDBACK);
+            return;
+        }
+        for (Order order : filter) {
+            UserController userController = new UserController();
+            User orderUser = userController.findById(order.getUserId());
+            List<String> itemName = new ArrayList<>();
+           for (CartItem item:order.getOrderDetail()){
+               itemName.add(item.getItemFood().getFoodName());
+           }
+            System.out.println("---------------------------------------" + "\n" +
+                    "Order ID: " + order.getId() +  " | Customer: " + orderUser.getName() + "\n"+
+                    "Food: " + itemName.toString().replace("[","").replace("]","")+ "\n"+
+                    "Feedback: " + order.getFeedbackList().toString().replace("[","").replace("]",""));
+
+        }
+
     }
-
     public void viewAllOrder() {
         List<Order> orderList;
         if (Main.currentLogin.getRoles().contains(RoleName.ADMIN)) {
@@ -154,6 +168,7 @@ public class OrderManagerV2 {
         }
 
     }
+
     public void viewOrderByCode(byte code) {
         List<Order> orderList;
         if (Main.currentLogin.getRoles().contains(RoleName.ADMIN)) {
@@ -251,7 +266,7 @@ public class OrderManagerV2 {
                 System.err.println("The order has been canceled");
                 break;
             default:
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
         }
     }
     private void cancelByCustomer(Order order) {
@@ -274,11 +289,12 @@ public class OrderManagerV2 {
             userController.save(Main.currentLogin);
             orderController.save(order);
 
-            System.out.println(Alert.SUCCESS);
+            System.out.println(Alert.SUCCESSFUL);
         }
     }
 
     public void changeOrderStatus() {
+        UserController userController = new UserController();
         System.out.println("Enter order ID: ");
         int changeOrderStatusId = InputMethods.getInteger();
         Order changeOrderStatus = orderController.findByIdForAdmin(changeOrderStatusId);
@@ -300,10 +316,10 @@ public class OrderManagerV2 {
                 System.err.println("The order is delivered to customer");
                 break;
             case (byte) 6:
-                System.err.println("The order has been canceled by customer");
+                System.err.println("The order has been canceled");
                 break;
             default:
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
         }
     }
     private void confirm(Order changeOrderStatus) {
@@ -322,35 +338,35 @@ public class OrderManagerV2 {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
     }
     private void preparingAndDelivering(Order changeOrderStatus) {
-        changeOrderStatus.setStatus((byte) 3);
+        changeOrderStatus.setStatus((byte) 3); // prepare
         orderController.save(changeOrderStatus);
         Thread prepareThread = new Thread(() -> {
             try {
                 Thread.sleep(Order.PREPARE_TIME);
-                changeOrderStatus.setStatus((byte) 4);
+                changeOrderStatus.setStatus((byte) 4); // delivering
                 orderController.save(changeOrderStatus);
                 Thread deliveryThread = new Thread(() -> {
                     try {
                         Thread.sleep(Order.DELIVERY_TIME);
-                        changeOrderStatus.setStatus((byte) 5);
-                        System.out.println("Order ID "+changeOrderStatus.getId()+ " is DELIVERED");
+                        changeOrderStatus.setStatus((byte) 5); // delivered
+                        System.out.println("\u001B[4;36mOrder ID "+changeOrderStatus.getId()+ " is DELIVERED\u001B[0m");
                         orderController.save(changeOrderStatus);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 });
                 deliveryThread.start();
-                System.out.println("Order ID "+changeOrderStatus.getId()+" is DELIVERING");
+                System.out.println("\u001B[4;36mOrder ID "+changeOrderStatus.getId()+" is DELIVERING\u001B[0m");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
         prepareThread.start();
-        System.out.println("Order ID "+changeOrderStatus.getId()+" is PREPARING");
+        System.out.println("\u001B[4;36mOrder ID "+changeOrderStatus.getId()+" is PREPARING\u001B[0m");
     }
     private void cancelByAdmin(Order changeOrderStatus) {
         changeOrderStatus.setStatus((byte) 6);
@@ -364,11 +380,13 @@ public class OrderManagerV2 {
         UserController userController = new UserController();
         int buyUserId = changeOrderStatus.getUserId();
         User buyUser = userController.findById(buyUserId);
-        buyUser.setWallet(buyUser.getWallet() + changeOrderStatus.getTotal());
-        userController.save(buyUser);
-        System.out.println(Alert.SUCCESS);
-    }
+        if(changeOrderStatus.getPaymentMethod().equals(PaymentMethod.WALLET)) {
+            buyUser.setWallet(buyUser.getWallet() + changeOrderStatus.getTotal());
+            userController.save(buyUser);
+        }
+        System.out.println(Alert.SUCCESSFUL);
 
+    }
 
     public void giveAFeedback() {
         List<Order> orderList;
@@ -384,10 +402,9 @@ public class OrderManagerV2 {
             }
         }
         if (filter.isEmpty()) {
-            System.out.println("Empty");
+            System.out.println(Alert.EMPTY_LIST);
             return;
         }
-
         System.out.println("Enter order ID: ");
         int feedbackOrderId = InputMethods.getInteger();
         Order feedbackOrder = find(feedbackOrderId, filter);
@@ -400,13 +417,10 @@ public class OrderManagerV2 {
         feedback.setFeedbackContent(InputMethods.getString());
         feedbackOrder.getFeedbackList().add(feedback);
         orderController.save(feedbackOrder);
-        System.out.println(Alert.SUCCESS);
+        System.out.println("\u001B[1;35mThank you for your feedback!\u001B[0m");
     }
-    public void viewFeedback(){
-        for (Order order: orderController.getAll()){
-            System.out.println(order.getFeedbackList());
-        }
-    }
+
+
     public Order find(int id, List<Order> orderList) {
         for (Order order : orderList) {
             if (order.getId() == id) {
@@ -415,6 +429,21 @@ public class OrderManagerV2 {
         }
         return null;
     }
+    private static void displayOrderForAdmin(Order order, User orderUser) {
+
+        System.out.println("---------------------------------------" + "\n" +
+                "Order ID: " + order.getId() + " | Date: " + order.getBuyDate() + "\n" +
+                "Customer: " + orderUser.getName() + " | Phone number: " + orderUser.getTel() + "\n" +
+                "Detail: " +
+                order.getOrderDetail().toString().replace(", ", "\n").replace("[", "\n").replace("]", "\n").replace("ID: ", "") +
+                "Total: " + Validation.formatPrice(order.getTotal()) + " | Payment method: "+order.getPaymentMethod()+"\n"+
+                "Shipping method: "+order.getShippingMethod()+ " | Status: " + Message.getStatusByCode(order.getStatus()) + "\n" +
+                "Receiver: " + order.getReceiver() + "\n" +
+                "Phone number: " + order.getPhoneNumber() + "\n" +
+                "Address: " + order.getAddress());
+
+    }
+
 
 }
 

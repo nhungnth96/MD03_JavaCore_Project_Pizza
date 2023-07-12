@@ -1,8 +1,6 @@
 package ra.config;
 
 
-import ra.model.order.ShippingMethod;
-
 public class Message {
     public static String getStatusByCode (byte code){
         switch (code) {
@@ -17,7 +15,8 @@ public class Message {
             case 6:
                 return "Cancel";
             default:
-                return InputMethods.ERROR_ALERT;
+                return InputMethods.FORMAT_ERROR;
         }
+
     }
 }

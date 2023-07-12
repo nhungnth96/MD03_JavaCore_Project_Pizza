@@ -6,6 +6,7 @@ import ra.config.Validation;
 import ra.controller.CartController;
 import ra.controller.FoodController;
 import ra.controller.OrderController;
+import ra.controller.UserController;
 import ra.model.cart.CartItem;
 
 import ra.model.food.PizzaCrust;
@@ -20,9 +21,10 @@ import ra.model.user.User;
 import java.util.List;
 
 public class CartManager {
-    private static CartController cartController ;
+    private static CartController cartController;
     private FoodController foodController;
     private OrderController orderController;
+
     public CartManager() {
         cartController = new CartController(Main.currentLogin);
         foodController = new FoodController();
@@ -56,7 +58,7 @@ public class CartManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -64,101 +66,105 @@ public class CartManager {
         }
 
     }
+
     public void showCart() {
         User currentLogin = Main.currentLogin;
         List<CartItem> itemList = currentLogin.getCart();
-        if(itemList.isEmpty()){
+        if (itemList.isEmpty()) {
             System.out.println(Alert.EMPTY_LIST);
             return;
         }
-        for (CartItem item:itemList){
+        for (CartItem item : itemList) {
             item.setItemFood(foodController.findById(item.getItemFood().getFoodId()));
             System.out.println(item);
         }
     }
+
     public static void addItemToCart() {
         cartController = new CartController(Main.currentLogin);
         FoodController foodController = new FoodController();
         System.out.println("Enter food ID: ");
-       int footId = InputMethods.getInteger();
-       Food food = foodController.findById(footId);
-       if(food ==null){
-           System.err.println(Alert.NOT_FOUND);
-           return;
-       }
-       CartItem item = new CartItem();
-       item.setItemId(cartController.getNewId());
-       item.setItemFood(food);
+        int footId = InputMethods.getInteger();
+        Food food = foodController.findById(footId);
+        if (food == null) {
+            System.err.println(Alert.NOT_FOUND);
+            return;
+        }
+        CartItem item = new CartItem();
+        item.setItemId(cartController.getNewId());
+        item.setItemFood(food);
         System.out.println("Enter quantity: ");
         item.setItemQuantity(InputMethods.getInteger());
         cartController.save(item);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
+
     public static void addItemToCartV2() {
         cartController = new CartController(Main.currentLogin);
         FoodController foodController = new FoodController();
         System.out.println("Enter food ID: ");
         int footId = InputMethods.getInteger();
         Food food = foodController.findById(footId);
-        if(food ==null){
+        if (food == null) {
             System.err.println(Alert.NOT_FOUND);
             return;
         }
-            CartItem item = new CartItem();
-            item.setItemId(cartController.getNewId());
-            item.setItemFood(food);
-        if(item.getItemFood().getFoodCategory().getCategoryName().equals("Pizza")){
+        CartItem item = new CartItem();
+        item.setItemId(cartController.getNewId());
+        item.setItemFood(food);
+        if (item.getItemFood().getFoodCategory().getCategoryName().equals("Pizza")) {
             System.out.println("Choose pizza crust: ");
             for (int i = 0; i < PizzaCrust.values().length; i++) {
                 System.out.println((i + 1) + ". " + PizzaCrust.values()[i]);
             }
-            while(true){
+            while (true) {
                 int crustChoice = InputMethods.getInteger();
                 if (crustChoice >= 1 && crustChoice <= PizzaCrust.values().length) {
-                    item.setPizzaCrust(PizzaCrust.values()[crustChoice-1]);
+                    item.setPizzaCrust(PizzaCrust.values()[crustChoice - 1]);
                     break;
                 }
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
             System.out.println("Choose pizza size: ");
             for (int i = 0; i < PizzaSize.values().length; i++) {
-                System.out.println((i + 1) + ". " + PizzaSize.values()[i]);
+                System.out.println((i + 1) + ". " + PizzaSize.values()[i] + " --- Price: " + Validation.formatPrice(item.getItemFood().getFoodPrice() + PizzaSize.values()[i].getPrice()));
             }
-            while(true){
+            while (true) {
                 int sizeChoice = InputMethods.getInteger();
                 if (sizeChoice >= 1 && sizeChoice <= PizzaSize.values().length) {
-                    item.setPizzaSize(PizzaSize.values()[sizeChoice-1]);
-                    item.setPizzaPrice(item.getItemFood().getFoodPrice()+item.getPizzaSize().getPrice());
+                    item.setPizzaSize(PizzaSize.values()[sizeChoice - 1]);
+                    item.setPizzaPrice(item.getItemFood().getFoodPrice() + item.getPizzaSize().getPrice());
                     break;
                 }
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
             System.out.println("Choose pizza extras cheese: ");
             for (int i = 0; i < PizzaExtrasCheese.values().length; i++) {
-                System.out.println((i + 1) + ". " + PizzaExtrasCheese.values()[i]);
+                System.out.println((i + 1) + ". " + PizzaExtrasCheese.values()[i] + " --- Price: " + Validation.formatPrice(item.getPizzaPrice() + PizzaExtrasCheese.values()[i].getPrice()));
 
             }
-            while(true){
+            while (true) {
                 int extrasCheeseChoice = InputMethods.getInteger();
                 if (extrasCheeseChoice >= 1 && extrasCheeseChoice <= PizzaExtrasCheese.values().length) {
-                    item.setPizzaExtrasCheese(PizzaExtrasCheese.values()[extrasCheeseChoice-1]);
-                    item.setPizzaPrice(item.getPizzaPrice()+item.getPizzaExtrasCheese().getPrice());
+                    item.setPizzaExtrasCheese(PizzaExtrasCheese.values()[extrasCheeseChoice - 1]);
+                    item.setPizzaPrice(item.getPizzaPrice() + item.getPizzaExtrasCheese().getPrice());
                     break;
                 }
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
         }
         System.out.println("Enter quantity: ");
         item.setItemQuantity(InputMethods.getInteger());
         cartController.save(item);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
 
     }
-    public void changeItemQuantity(){
+
+    public void changeItemQuantity() {
         System.out.println("Enter item ID: ");
         int itemId = InputMethods.getInteger();
         CartItem item = cartController.findById(itemId);
-        if(item==null){
+        if (item == null) {
             System.err.println(Alert.NOT_FOUND);
             return;
         }
@@ -167,47 +173,54 @@ public class CartManager {
         item.setItemQuantity(InputMethods.getInteger());
         cartController.save(item);
 
-        }
+    }
+
     public void deleteItemInCart() {
         System.out.println("Enter item ID: ");
         int deleteId = InputMethods.getInteger();
-        if(cartController.findById(deleteId)==null){
+        if (cartController.findById(deleteId) == null) {
             System.err.println(Alert.NOT_FOUND);
             return;
         }
         cartController.delete(deleteId);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
+
     public void clearCart() {
         cartController.clearAll();
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
-    public void checkOut(FoodController foodController){
+
+    public void checkOut(FoodController foodController) {
         cartController = new CartController(Main.currentLogin);
         this.foodController = foodController;
         User currentLogin = Main.currentLogin;
-
+        UserController userController = new UserController();
         List<CartItem> itemList = currentLogin.getCart();
-        if(itemList.isEmpty()){
-            System.out.println(Alert.EMPTY_LIST);
+        if (itemList.isEmpty()) {
+            System.out.println(Alert.NO_CART);
             return;
         }
         // kiểm tra số lượng trong kho
-        for(CartItem item: itemList){
+        for (CartItem item : itemList) {
             Food food = foodController.findById(item.getItemFood().getFoodId());
-            if(item.getItemQuantity()> food.getFoodStock()){
-                System.err.println("The "+ food.getFoodName()+" is only have "+ food.getFoodStock()+" in stock, please reduce");
+            if (item.getItemQuantity() > food.getFoodStock()) {
+                System.err.println("The " + food.getFoodName() + " is only have " + food.getFoodStock() + " in stock, please reduce");
+                return;
+            }
+            if (food.getFoodStock() == 0) {
+                System.err.println("The " + food.getFoodName() + " is out of stock");
                 return;
             }
         }
         Order newOrder = new Order();
-        OrderController orderController = new OrderController() ;
+        OrderController orderController = new OrderController();
         newOrder.setId(orderController.getNewId());
         // copy sp trong giỏ hàng sang hóa đơn
         newOrder.setOrderDetail(currentLogin.getCart());
         // cập nhật tổng tiền
         double total = 0;
-        for (CartItem item: itemList) {
+        for (CartItem item : itemList) {
             if (item.getItemFood().getFoodCategory().getCategoryName().equals("Pizza")) {
                 total += (item.getItemQuantity() * item.getPizzaPrice());
             } else {
@@ -215,6 +228,7 @@ public class CartManager {
             }
         }
         newOrder.setTotal(total);
+        System.out.println("Total: " + Validation.formatPrice(total));
         newOrder.setUserId(currentLogin.getId());
         System.out.println("Choose payment method: ");
         for (int i = 0; i < PaymentMethod.values().length; i++) {
@@ -222,96 +236,73 @@ public class CartManager {
             // 1. Cash
             // 2. Wallet
         }
-        while(true){
+        while (true) {
             int payChoice = InputMethods.getInteger();
             if (payChoice >= 1 && payChoice <= PaymentMethod.values().length) {
-                if(payChoice==2){
-                    if(currentLogin.getWallet()< newOrder.getTotal()){
-                        System.err.println("Your wallet is not enough money to pay, load more money or choose another method ");
+                if (payChoice == 2) {
+                    if (currentLogin.getWallet() < newOrder.getTotal()) {
+                        System.err.println("Your wallet is not enough money to pay, load more money or pay by cash ");
                         return;
                     }
-                    currentLogin.setWallet(currentLogin.getWallet()- newOrder.getTotal());
+                    currentLogin.setWallet(currentLogin.getWallet() - newOrder.getTotal());
                 }
-                newOrder.setPaymentMethod(PaymentMethod.values()[payChoice-1]);
+                newOrder.setPaymentMethod(PaymentMethod.values()[payChoice - 1]);
                 break;
             }
-            System.err.println(InputMethods.ERROR_ALERT);
+            System.err.println(InputMethods.FORMAT_ERROR);
         }
         System.out.println("Choose shipping method: ");
         for (int i = 0; i < ShippingMethod.values().length; i++) {
-            System.out.println((i + 1) + ". " + ShippingMethod.values()[i]);
+            System.out.println((i + 1) + ". " + ShippingMethod.values()[i] + " --- Total: " + Validation.formatPrice(newOrder.getTotal() + ShippingMethod.values()[i].getPrice()));
+
             // 1. Delivery
             // 2. Takeaway
         }
-        while(true){
+        while (true) {
             int shipChoice = InputMethods.getInteger();
-            if (shipChoice >= 1 && shipChoice <= PaymentMethod.values().length){
-                newOrder.setShippingMethod(ShippingMethod.values()[shipChoice-1]);
-                if(shipChoice==1){
-                    newOrder.setTotal(total+newOrder.getShippingMethod().getPrice());
-                    if(newOrder.getPaymentMethod().equals(PaymentMethod.WALLET)){
-                        if(currentLogin.getWallet()< newOrder.getTotal()){
+            if (shipChoice >= 1 && shipChoice <= PaymentMethod.values().length) {
+                newOrder.setShippingMethod(ShippingMethod.values()[shipChoice - 1]);
+                if (shipChoice == 1) {
+                    newOrder.setTotal(total + newOrder.getShippingMethod().getPrice());
+                    if (newOrder.getPaymentMethod().equals(PaymentMethod.WALLET)) {
+                        if (currentLogin.getWallet() < newOrder.getTotal()) {
                             System.err.println("Your wallet is not enough money to pay, load more money or choose another method ");
                             return;
                         }
+                        currentLogin.setWallet(currentLogin.getWallet() - newOrder.getTotal());
+                        userController.save(currentLogin);
+
                     }
-                    currentLogin.setWallet(currentLogin.getWallet()- newOrder.getTotal());
-                    System.out.println("Enter receiver name: ");
-                    newOrder.setReceiver(InputMethods.getString());
-                    System.out.println("Enter phone number: ");
-                    String tel;
-                    while (true) {
-                        tel = InputMethods.getString();
-                        if (Validation.validateTel(tel)) {
-                            newOrder.setPhoneNumber(tel);
-                            break;
-                        }
-                        System.err.println(Alert.ERROR_TEL);
-                    }
-                    System.out.println("Enter address: ");
-                    newOrder.setAddress(InputMethods.getString());
-                    break;
+
                 }
-                    if (currentLogin.getName().equals("")){
-                        System.out.println("Enter receiver: ");
-                        newOrder.setReceiver(InputMethods.getString());
-                        break;
-                    }
-                    newOrder.setReceiver(currentLogin.getName());
-                    if (currentLogin.getTel().equals("")){
-                        System.out.println("Enter phone number: ");
-                        String tel;
-                        while (true) {
-                            tel = InputMethods.getString();
-                            if (Validation.validateTel(tel)) {
-                                break;
-                            }
-                            System.err.println(Alert.ERROR_TEL);
-                        }
+                System.out.println("Enter receiver name: ");
+                newOrder.setReceiver(InputMethods.getString());
+                System.out.println("Enter phone number: ");
+                String tel;
+                while (true) {
+                    tel = InputMethods.getString();
+                    if (Validation.validateTel(tel)) {
                         newOrder.setPhoneNumber(tel);
                         break;
                     }
-                    newOrder.setPhoneNumber(currentLogin.getTel());
-                    if (currentLogin.getAddress().equals("")){
-                        System.out.println("Enter address: ");
-                        newOrder.setAddress(InputMethods.getString());
-                        break;
-                    }
-                    newOrder.setAddress(currentLogin.getAddress());
-                    break;
+                    System.err.println(Alert.TEL_ERROR);
                 }
-            System.err.println(InputMethods.ERROR_ALERT);
+                System.out.println("Enter address: ");
+                newOrder.setAddress(InputMethods.getString());
+                break;
             }
 
-        orderController.save(newOrder);
-        System.out.println("\u001B[43mThank you!!!\u001B[0m");
-        // giảm số lượng trong stock
-        for(CartItem item: itemList){
-            FoodController foodController1 = new FoodController();
-            Food food = foodController1.findById(item.getItemFood().getFoodId());
-            food.setFoodStock(food.getFoodStock()- item.getItemQuantity());
-            foodController1.save(food);
+                System.err.println(InputMethods.FORMAT_ERROR);
+            }
+            orderController.save(newOrder);
+            System.out.println("\u001B[1;35mThank you for choosing us! Your order will be confirm soon!\u001B[0m");
+            // giảm số lượng trong stock
+            for (CartItem item : itemList) {
+                FoodController foodController1 = new FoodController();
+                Food food = foodController1.findById(item.getItemFood().getFoodId());
+                food.setFoodStock(food.getFoodStock() - item.getItemQuantity());
+                foodController1.save(food);
+            }
+            cartController.clearAll();
         }
-        clearCart();
     }
-}

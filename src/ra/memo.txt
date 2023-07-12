@@ -1,156 +1,17 @@
-//                System.out.println("Enter tel: ");
-//                String tel;
-//                while (true) {
-//                      tel = InputMethods.getString();
-//                    if (Validation.validateTel(tel)) {
-//                        break;
-//                    }
-//                    System.out.println(Alert.ERROR_TEL);
-//                }
 
 
-        // Chọn nhiều quyền: user,admin,...etc
-//        System.out.println("Enter roles: ");
-//        String roles = InputMethods.getString();
-//        String[] stringRoles = roles.split(",");
-//        for(String s : stringRoles){
-//            switch (s){
-//                case "admin":
-//                    user.getRoles().add(RoleName.ADMIN);
-//                    break;
-//                case "user":
-//                    user.getRoles().add(RoleName.USER);
-//                    break;
-//                default:
-//                    user.getRoles().add(RoleName.USER);
-//            }
-//        }
-
-
-"\u001B[33mEmpty category list\u001B[0m"
-
-// tăng giảm stock
-ProductController foodController = new ProductController();
-        int newQuantity;
-        while (true){
-            newQuantity = InputMethods.getInteger();
-            Product food = item.getProduct();
-            if(newQuantity <= item.getQuantity()+food.getStock()){
-                food.setStock(food.getStock()+item.getQuantity());
-                item.setQuantity(newQuantity);
-                food.setStock(food.getStock()-item.getQuantity());
-                foodController.save(food);
-                cartController.save(item);
-                break;
-            }
-            System.err.println("Can only buy more than "+ item.getQuantity()+food.getStock() + "products");
-// add to cart thay đổi số lượng
-      int quantity;
-        while (true) {
-            quantity = InputMethods.getInteger();
-            if (quantity <= food.getStock()){
-                break;
-            }
-            System.err.println("Only have " +food.getStock() + " in stock, please reduce");
-        }
-        item.setQuantity(quantity);
-        cartController.save(item);
-        food.setStock(food.getStock()- item.getQuantity());
-        foodController.save(food);
-        cartController.save(item);
-
-        	╔═════════════════════════════════════════════════════╗
-        	║                  	▪ ▪                            ║
-        	║                 ▪ ▪ ▪ ▪                      ║
-        	║               ▪ ▪ ▪ ▪ ▪ ▪                                      ║
-        	║             ▪ ▪ ▪     ▪ ▪ ▪                                            ║
-        	║           ▪ ▪ ▪ ▪     ▪ ▪ ▪ ▪                                    ║
-        	║         ◾ ◾ ◾  ▪ ▪       ▪ ▪ ▪ ▪                                          ║
-        	║       ◾ ◾ ◾ ◾ ◾ ◾     ▪ ▪ ▪ ▪ ▪ ▪ ▪                                        ║
-        	║     ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾  ▪ ▪ ▪ ▪ ▪ ▪                                       ║
-        	║    ◾      ◾ ◾ ◾ ◾ ◾      ◾ ◾    ▪ ▪ ▪                               ║
-        	║  ◾       ◾ ◾ ◾       ◾ ◾ ◾                                        ║
-        	║    ◾ ◾      ◾ ◾ ◾ ◾ ◾      ◾ ◾                                          ║
-        	║      ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾ ◾                               ║
-        	║        ◾ ◾ ◾ ◾ ◾ ◾ ◾                              ║
-        	║             ◾ ◾ ◾                            ║
-        	║                                                     ║
-        	║                                                     ║
-        	║                                                     ║
-        	║                                                     ║
-        	║                                                     ║
-        	╚═════════════════════════════════════════════════════╝
-  	                ···
-                  ·······
-                ···········
-              ······   ······
-            ·······     ·······
-         •••  ······   ······
-       •••••••  ···········
-     •••••••••••  ·······
-   ••   •••••   ••  ···
- •••     •••     •••
-   ••   •••••   ••
-     •••••••••••
-       •••••••
-         •••
-
-
-          if(food.getFoodCategory().getCategoryName().equals("Pizza")){
-                     Food pizza = new Food();
-                     pizza.setFoodId(food.getFoodId());
-                     pizza.setFoodName(food.getFoodName());
-                     pizza.setFoodIngredient(food.getFoodIngredient());
-                     pizza.setFoodCategory(food.getFoodCategory());
-                     pizza.setFoodStock(food.getFoodStock());
-                     pizza.setFoodStatus(food.isFoodStatus());
-                     pizza.setFoodPrice(food.getFoodPrice());
-                     System.out.println("Choose pizza crust: ");
-                     for (int i = 0; i < PizzaCrust.values().length; i++) {
-                         System.out.println((i + 1) + ". " + PizzaCrust.values()[i]);
-                     }
-                     while(true){
-                         int crustChoice = InputMethods.getInteger();
-                         if (crustChoice >= 1 && crustChoice <= PizzaCrust.values().length) {
-                             pizza.setPizzaCrust(PizzaCrust.values()[crustChoice-1]);
-                             break;
-                         }
-                             System.err.println(InputMethods.ERROR_ALERT);
-                     }
-                     System.out.println("Choose pizza size: ");
-                     for (int i = 0; i < PizzaSize.values().length; i++) {
-                         System.out.println((i + 1) + ". " + PizzaSize.values()[i]);
-                     }
-                     while(true){
-                         int sizeChoice = InputMethods.getInteger();
-                         if (sizeChoice >= 1 && sizeChoice <= PizzaSize.values().length) {
-                             pizza.setPizzaSize(PizzaSize.values()[sizeChoice-1]);
-         //                    pizza.setFoodPrice(pizza.getFoodPrice()+pizza.getPizzaSize().getPrice());
-                             break;
-                         }
-                         System.err.println(InputMethods.ERROR_ALERT);
-                     }
-                     System.out.println("Choose pizza extras cheese: ");
-                     for (int i = 0; i < PizzaExtrasCheese.values().length; i++) {
-                         System.out.println((i + 1) + ". " + PizzaExtrasCheese.values()[i]);
-
-                     }
-                     while(true){
-                         int extrasCheeseChoice = InputMethods.getInteger();
-                         if (extrasCheeseChoice >= 1 && extrasCheeseChoice <= PizzaExtrasCheese.values().length) {
-                             pizza.setPizzaExtrasCheese(PizzaExtrasCheese.values()[extrasCheeseChoice-1]);
-         //                    pizza.setFoodPrice(pizza.getFoodPrice()+food.getPizzaExtrasCheese().getPrice());
-                             break;
-                         }
-                         System.err.println(InputMethods.ERROR_ALERT);
-                     }
-                     foodController.save(pizza);
-                     CartItem item = new CartItem();
-                     item.setItemId(cartController.getNewId());
-                     item.setItemFood(pizza);
-                     System.out.println("Enter quantity: ");
-                     item.setItemQuantity(InputMethods.getInteger());
-                     cartController.save(item);
-                     System.out.println(Alert.SUCCESS);
-                 }
+  	                       ···
+                         ·······
+                       ···········
+                     ············
+                   ··············
+                •••  ············
+              •••••••  ···········
+            •••••••••••  ·······
+          •••••••••  ···
+        •••••••••
+          •••••••••
+            •••••••••••
+              •••••••
+                •••
 

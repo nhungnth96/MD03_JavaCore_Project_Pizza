@@ -4,7 +4,6 @@ import ra.config.Alert;
 import ra.config.InputMethods;
 import ra.config.Validation;
 import ra.controller.UserController;
-import ra.model.food.Food;
 import ra.model.user.RoleName;
 import ra.model.user.User;
 
@@ -15,15 +14,14 @@ public class UserManager {
     public UserManager(UserController userController) {
         this.userController = userController;
         while (true) {
-            System.out.println("╔══════════USER MANAGER═════════╗");
-            System.out.println("║       1. Show all account     ║");
-            System.out.println("║       2. Change status        ║");
-            System.out.println("║       3. Search account       ║");
-            System.out.println("║       4. Change role          ║");
-            System.out.println("║       5. Create account       ║");
-            System.out.println("║       0. Back                 ║");
-            System.out.println("╚═══════════════════════════════╝");
-            System.out.print("        Enter choice: ");
+            System.out.println("═════════USER MANAGER═════════");
+            System.out.println("1. Show all account");
+            System.out.println("2. Change status");
+            System.out.println("3. Search account");
+            System.out.println("4. Change role");
+            System.out.println("5. Create account");
+            System.out.println("0. Back");
+            System.out.print("Enter choice: ");
             byte choice = InputMethods.getByte();
             switch (choice) {
                 case 1:
@@ -45,7 +43,7 @@ public class UserManager {
                     Main.adminPage();
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -99,18 +97,18 @@ public class UserManager {
         while (true) {
             username = InputMethods.getString();
             if(!Validation.validateSpaces(username)){
-                System.err.println(Alert.ERROR_SPACE);
+                System.err.println(Alert.SPACE_ERROR);
                 continue;
             }
             if (userController.checkExistedUsername(username)) {
-                System.err.println(Alert.ERROR_EXISTED);
+                System.err.println(Alert.EXISTED_ERROR);
                 continue;
             }
             if (Validation.validateUserName(username)) {
                 user.setUsername(username);
                 break;
             }
-            System.err.println(Alert.ERROR_USERNAME);
+            System.err.println(Alert.USERNAME_ERROR);
 
         }
         System.out.println("Enter password: ");
@@ -118,32 +116,32 @@ public class UserManager {
         while (true) {
             password = InputMethods.getString();
             if(!Validation.validateSpaces(password)){
-                System.err.println(Alert.ERROR_SPACE);
+                System.err.println(Alert.SPACE_ERROR);
                 continue;
             }
             if (Validation.validatePassword(password)) {
                 user.setPassword(password);
                 break;
             }
-            System.err.println(Alert.ERROR_PASSWORD);
+            System.err.println(Alert.PASSWORD_ERROR);
         }
         System.out.println("Enter email: ");
         String email;
         while (true) {
             email = InputMethods.getString();
             if(!Validation.validateSpaces(email)){
-                System.err.println(Alert.ERROR_SPACE);
+                System.err.println(Alert.SPACE_ERROR);
                 continue;
             }
             if (userController.checkExistedEmail(email)) {
-                System.err.println(Alert.ERROR_EXISTED);
+                System.err.println(Alert.EXISTED_ERROR);
                 continue;
             }
             if (Validation.validateEmail(email)) {
                 user.setEmail(email);
                 break;
             }
-            System.err.println(Alert.ERROR_EMAIL);
+            System.err.println(Alert.EMAIL_ERROR);
         }
 //        System.out.println("Enter Roles: (etc: user,admin,...)");
 //        String roles = InputMethods.getString().toLowerCase();
@@ -161,7 +159,7 @@ public class UserManager {
 //        }
         user.setRoles(new HashSet<>(Arrays.asList(RoleName.USER)));
         userController.save(user);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
 
     }
 

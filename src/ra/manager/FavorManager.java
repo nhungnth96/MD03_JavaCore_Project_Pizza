@@ -3,7 +3,6 @@ package ra.manager;
 import ra.config.Alert;
 import ra.config.InputMethods;
 import ra.config.Validation;
-import ra.controller.CartController;
 import ra.controller.FavorController;
 import ra.controller.FoodController;
 import ra.controller.OrderController;
@@ -58,7 +57,7 @@ public class FavorManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -103,7 +102,7 @@ public class FavorManager {
                     item.setPizzaCrust(PizzaCrust.values()[crustChoice-1]);
                     break;
                 }
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
             System.out.println("Choose pizza size: ");
             for (int i = 0; i < PizzaSize.values().length; i++) {
@@ -116,7 +115,7 @@ public class FavorManager {
                     item.setPizzaPrice(item.getFavorFood().getFoodPrice()+item.getPizzaSize().getPrice());
                     break;
                 }
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
             System.out.println("Choose pizza extras cheese: ");
             for (int i = 0; i < PizzaExtrasCheese.values().length; i++) {
@@ -130,11 +129,11 @@ public class FavorManager {
                     item.setPizzaPrice(item.getPizzaPrice()+item.getPizzaExtrasCheese().getPrice());
                     break;
                 }
-                System.err.println(InputMethods.ERROR_ALERT);
+                System.err.println(InputMethods.FORMAT_ERROR);
             }
         }
         favorController.save(item);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
     public void changeItemQuantity(){
         System.out.println("Enter item ID: ");
@@ -158,11 +157,11 @@ public class FavorManager {
             return;
         }
         favorController.delete(deleteId);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
     public void clearFavorList() {
         favorController.clearAll();
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
     public void checkOut(FoodController foodController){
         favorController = new FavorController(Main.currentLogin);
@@ -178,6 +177,10 @@ public class FavorManager {
             Food food = foodController.findById(item.getFavorFood().getFoodId());
             if(item.getItemQuantity()> food.getFoodStock()){
                 System.out.println("The "+ food.getFoodName()+" is only have "+ food.getFoodStock()+" in stock, please reduce");
+                return;
+            }
+            if(food.getFoodStock()==0) {
+                System.err.println("The "+ food.getFoodName() + " is out of stock");
                 return;
             }
         }
@@ -225,7 +228,7 @@ public class FavorManager {
                 newOrder.setPaymentMethod(PaymentMethod.values()[payChoice-1]);
                 break;
             }
-            System.err.println(InputMethods.ERROR_ALERT);
+            System.err.println(InputMethods.FORMAT_ERROR);
         }
         System.out.println("Choose shipping method: ");
         for (int i = 0; i < ShippingMethod.values().length; i++) {
@@ -256,7 +259,7 @@ public class FavorManager {
                             newOrder.setPhoneNumber(tel);
                             break;
                         }
-                        System.err.println(Alert.ERROR_TEL);
+                        System.err.println(Alert.TEL_ERROR);
                     }
                     System.out.println("Enter address: ");
                     newOrder.setAddress(InputMethods.getString());
@@ -276,7 +279,7 @@ public class FavorManager {
                         if (Validation.validateTel(tel)) {
                             break;
                         }
-                        System.err.println(Alert.ERROR_TEL);
+                        System.err.println(Alert.TEL_ERROR);
                     }
                     newOrder.setPhoneNumber(tel);
                     break;
@@ -290,7 +293,7 @@ public class FavorManager {
                 newOrder.setAddress(currentLogin.getAddress());
                 break;
             }
-            System.err.println(InputMethods.ERROR_ALERT);
+            System.err.println(InputMethods.FORMAT_ERROR);
         }
         orderController.save(newOrder);
         System.out.println("\u001B[43mThank you!!!\u001B[0m");

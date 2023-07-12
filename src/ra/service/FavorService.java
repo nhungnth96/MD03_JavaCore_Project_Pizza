@@ -1,7 +1,6 @@
 package ra.service;
 
 import ra.config.Alert;
-import ra.model.cart.CartItem;
 import ra.model.favor.FavorItem;
 import ra.model.user.User;
 
@@ -28,7 +27,7 @@ public class FavorService implements IGenericService<FavorItem,Integer> {
         if (findById(item.getFavorId()) == null) {
             FavorItem itemFood = findExistedItem(item.getFavorFood().getFoodId());
             if(itemFood!=null){
-                System.err.println(Alert.ERROR_EXISTED);
+                System.err.println(Alert.EXISTED_ERROR);
             }
             else {
                 favor.add(item);

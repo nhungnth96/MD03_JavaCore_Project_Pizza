@@ -44,7 +44,7 @@ public class CategoryManager {
                 case 0:
                     break;
                 default:
-                    System.err.println(InputMethods.ERROR_ALERT);
+                    System.err.println(InputMethods.FORMAT_ERROR);
             }
             if (choice == 0) {
                 break;
@@ -72,7 +72,7 @@ public class CategoryManager {
             System.out.println("Enter category name: ");
             category.setCategoryName(InputMethods.getString());
             categoryController.save(category);
-            System.out.println(Alert.SUCCESS);
+            System.out.println(Alert.SUCCESSFUL);
         }
     }
 
@@ -88,7 +88,7 @@ public class CategoryManager {
         System.out.println("Enter category name: ");
         editCategory.setCategoryName(InputMethods.getString());
         categoryController.save(editCategory);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void deleteCategory() {
@@ -100,7 +100,7 @@ public class CategoryManager {
             return;
         }
         categoryController.delete(deleteId);
-        System.out.println(Alert.SUCCESS);
+        System.out.println(Alert.SUCCESSFUL);
     }
 
     public void searchCategory() {

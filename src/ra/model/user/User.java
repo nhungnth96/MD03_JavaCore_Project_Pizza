@@ -2,9 +2,6 @@ package ra.model.user;
 
 import ra.model.cart.CartItem;
 import ra.model.favor.FavorItem;
-import ra.model.order.Order;
-import ra.model.wallet.Wallet;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;

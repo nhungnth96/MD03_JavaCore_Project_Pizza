@@ -1,11 +1,14 @@
 package ra.model.food;
 
 public enum PizzaSize {
-    SMALL(0),
-    MEDIUM(88.5),
-    LARGE(78.5);
+    SMALL(),
+    MEDIUM(88500),
+    LARGE(167000);
 
     private double price;
+
+    PizzaSize() {
+    }
 
     PizzaSize(double price) {
         this.price = price;
